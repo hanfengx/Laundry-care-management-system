@@ -1,0 +1,15 @@
+com\xiyi\domain\City.class
+com\xiyi\service\MainActivityService.class
+com\xiyi\controller\MainActivityController.class
+com\xiyi\common\PageResult.class
+com\xiyi\controller\LoginController.class
+com\xiyi\domain\Activity.class
+com\xiyi\domain\ClothesType.class
+com\xiyi\service\Impservice\MainActivityServiceImp.class
+com\xiyi\filter\LoginFilter.class
+com\xiyi\mapper\LoginMapper.class
+com\xiyi\mapper\MainActivityMapper.class
+com\xiyi\domain\Login.class
+com\xiyi\service\Impservice\LoginServiceImp.class
+com\xiyi\controller\LaundryRouterController.class
+com\xiyi\service\LoginService.class

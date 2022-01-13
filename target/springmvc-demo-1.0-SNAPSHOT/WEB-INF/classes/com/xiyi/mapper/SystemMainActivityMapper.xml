@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiyi.mapper.SystemMainActivityMapper">
+    <resultMap id="Activity" type="com.xiyi.domain.Activity">
+        <id property="actId" column="act_id"></id>
+        <result property="actName" column="act_name"/>
+        <result property="actCreateDate" column="act_createdate"/>
+        <result property="actEndDate" column="act_enddate"/>
+        <result property="actOriginator" column="act_originator"/>
+        <result property="actContent" column="act_content"/>
+        <result property="actPlace" column="act_place"/>
+        <result property="actScope" column="act_scope"/>
+        <result property="actState" column="act_state"/>
+        <association property="clothesType" javaType="ClothesType">
+            <id property="cltId" column="clt_id"></id>
+            <result property="cltName" column="clt_name"></result>
+        </association>
+        <association property="city" javaType="City">
+            <id property="id" column="id"></id>
+            <result property="pId" column="pid"></result>
+            <result property="cityName" column="cityname"></result>
+            <result property="type" column="`type`"></result>
+        </association>
+    </resultMap>
+
+
+    <insert id="addAct" parameterType="java.lang.Integer">
+        insert into activity
+        <trim prefix="(" suffix=")" prefixOverrides=",">
+            <if test="actName!=null||actName!=''">act_name,</if>
+            <if test="startDate!=null||startDate!=''">act_createdate,</if>
+            <if test="endDate!=null||endDate!=''">act_enddate,</if>
+            <if test="userName!=null||userName!=''">act_originator,</if>
+            <if test="actContent!=null||actContent!=''">act_content,</if>
+            <if test="placeId!=null||placeId!=0">act_place,</if>
+            <if test="actRegion!=null||actRegion!=''">act_scope,</if>
+            act_state
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="actName!=null||actName!=''">#{actName},</if>
+            <if test="startDate!=null||startDate!=''">#{startDate},</if>
+            <if test="endDate!=null||endDate!=''">#{endDate},</if>
+            <if test="userName!=null||userName!=''">#{userName},</if>
+            <if test="actContent!=null||actContent!=''">#{actContent},</if>
+            <if test="placeId!=null||placeId!=0">#{placeId},</if>
+            <if test="actRegion!=null||actRegion!=''">#{actRegion},</if>
+            0
+        </trim>
+    </insert>
+    <update id="online" parameterType="java.lang.String">
+        update activity set act_state = 1 where act_id = #{actId}
+    </update>
+
+    <update id="offline" parameterType="java.lang.String">
+        update activity set act_state = 2 where act_id = #{actId}
+    </update>
+
+    <update id="setAct">
+        update activity
+        <trim prefix="set(" suffix=")" suffixOverrides=",">
+            <if test="actName!=null||actName!=''">act_name=#{actName},</if>
+            <if test="startDate!=null||startDate!=''">act_createdate=#{startDate},</if>
+            <if test="endDate!=null||endDate!=''">act_enddate=#{endDate},</if>
+            <if test="userName!=null||userName!=''">act_originator=#{userName},</if>
+            <if test="actContent!=null||actContent!=''">act_content=#{actContent},</if>
+            <if test="placeId!=null||placeId!=0">act_place=#{placeId},</if>
+            <if test="actRegion!=null||actRegion!=''">act_scope=#{actRegion}</if>
+        </trim>
+        where act_id = #{actId};
+
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        delete from activity where act_id = #{actId};
+    </delete>
+
+    <select id="queryOne" parameterType="java.lang.String" resultMap="Activity">
+        select * from activity ty
+            inner join clothes_type ct on
+                ty.act_scope = ct.clt_id
+            left join city c on
+                ty.act_place = c.id
+        where ty.act_id = #{actId}
+    </select>
+</mapper>

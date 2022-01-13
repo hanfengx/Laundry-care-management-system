@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiyi.mapper.LoginMapper">
+    <resultMap id="Login" type="com.xiyi.domain.Login">
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userPwd" column="user_pwd"/>
+        <result property="userPermissions" column="user_permissions"/>
+    </resultMap>
+
+    <select id="login" parameterType="java.lang.String" resultMap="Login">
+        select user_id,user_pwd,user_name,user_permissions
+        from login
+        where user_name = #{userName} and user_pwd = #{userPwd}
+    </select>
+
+    <insert id="registration" parameterType="java.lang.Integer">
+        insert into login
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userName!=null">user_name,</if>
+            <if test="userPwd!=null">user_pwd,</if>
+            <if test="userPermissions!=null">user_permissions</if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="userName!=null">#{userName},</if>
+            <if test="userPwd!=null">#{userPwd},</if>
+            <if test="userPermissions!=null">#{userPermissions}</if>
+        </trim>
+    </insert>
+</mapper>

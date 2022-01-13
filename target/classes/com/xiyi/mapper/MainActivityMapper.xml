@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiyi.mapper.MainActivityMapper">
+
+    <resultMap id="Activity" type="com.xiyi.domain.Activity">
+        <id property="actId" column="act_id"></id>
+        <result property="actName" column="act_name"/>
+        <result property="actCreateDate" column="act_createdate"/>
+        <result property="actEndDate" column="act_enddate"/>
+        <result property="actOriginator" column="act_originator"/>
+        <result property="actContent" column="act_content"/>
+        <result property="actScope" column="act_scope"/>
+        <result property="actState" column="act_state"/>
+        <association property="clothesType" javaType="ClothesType">
+            <id property="cltId" column="clt_id"></id>
+            <result property="cltName" column="clt_name"></result>
+        </association>
+
+        <association property="city" javaType="City">
+            <id property="id" column="id"></id>
+            <result property="pId" column="pid"></result>
+            <result property="cityName" column="cityname"></result>
+            <result property="type" column="`type`"></result>
+        </association>
+    </resultMap>
+
+    <resultMap id="city" type="City">
+        <id property="id" column="id"></id>
+        <result property="pId" column="pid"></result>
+        <result property="cityName" column="cityname"></result>
+        <result property="type" column="cy_type"></result>
+    </resultMap>
+
+    <resultMap id="colthes" type="ClothesType">
+        <id property="cltId" column="clt_id"></id>
+        <result property="cltName" column="clt_name"></result>
+    </resultMap>
+
+    <select id="allActivity" resultType="object" resultMap="Activity">
+        select
+            ty.act_id,
+            ty.act_name,
+            ty.act_createdate,
+            ty.act_enddate,
+            ty.act_originator,
+            ty.act_content,
+            ty.act_state,
+            c.cityname,
+            group_concat(distinct ct.clt_name) clt_name
+        from
+            activity ty
+        inner join clothes_type ct on
+            ty.act_scope = ct.clt_id
+        left join city c on
+            ty.act_place = c.id
+        <trim prefix="WHERE (" suffix=")" prefixOverrides="AND |OR ">
+            <if test="actName!='' ">ty.act_name = #{actName}</if>
+            <if test="region!=''">and ty.act_scope = #{region}</if>
+            <if test="startDate!=''">and ty.act_createdate >= #{startDate}</if>
+            <if test="endDate!='' ">and  #{endDate} >= ty.act_enddate</if>
+            <if test="placeId!=0">and ty.act_place = #{placeId}</if>
+        </trim>
+        group by
+            act_name
+    </select>
+
+    <select id="getCity" resultMap="city">
+        select id,pid,cityname,cy_type from city  where id >1
+    </select>
+
+
+    <select id="clothesType" resultMap="colthes">
+        SELECT clt_id, clt_name
+        FROM clothes_type
+    </select>
+
+
+</mapper>
