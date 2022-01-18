@@ -57,12 +57,12 @@
 
     <update id="setAct">
         update activity
-        <trim prefix="set(" suffix=")" suffixOverrides=",">
+        <trim prefix="set" suffix="" suffixOverrides=",">
             <if test="actName!=null||actName!=''">act_name=#{actName},</if>
             <if test="startDate!=null||startDate!=''">act_createdate=#{startDate},</if>
             <if test="endDate!=null||endDate!=''">act_enddate=#{endDate},</if>
             <if test="userName!=null||userName!=''">act_originator=#{userName},</if>
-            <if test="actContent!=null||actContent!=''">act_content=#{actContent},</if>
+            <if test="actContent!=null  ||actContent!=''">act_content=#{actContent},</if>
             <if test="placeId!=null||placeId!=0">act_place=#{placeId},</if>
             <if test="actRegion!=null||actRegion!=''">act_scope=#{actRegion}</if>
         </trim>
