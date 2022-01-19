@@ -46,7 +46,7 @@
             </el-form-item>
             <el-form-item>
                 <el-button type="primary"  round @click="query()">查询</el-button>
-                <el-button type="success" round  @click="visible=!visible">新增</el-button>
+                <el-button type="success" round  @click="added()">新增</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -114,23 +114,23 @@
     <#--增加或修改活动-->
     <el-dialog title="活动" :visible.sync="visible">
         <el-form :model="form" label-width="80px">
-            <el-form-item label="活动名称">
+            <el-form-item prop="name" label="活动名称">
                 <el-col :span="8">
                     <el-input  v-model="form.name" placeholder="请输入内容"></el-input>
                 </el-col>
             </el-form-item>
-            <el-form-item label="活动地点">
+            <el-form-item prop="place" label="活动地点">
                 <el-cascader
                         :props="{ checkStrictly: true }"
                         v-model="form.place"
                         :options="options"
                         clearable
-                        :placeholder="pleasett"
+                        placeholder="请选择活动地点"
                         filterable
                         :show-all-levels="false"></el-cascader>
             </el-form-item>
 
-            <el-form-item label="活动时间">
+            <el-form-item prop="date" label="活动时间">
                 <el-date-picker
                         v-model="form.date"
                         type="daterange"
@@ -143,7 +143,7 @@
                         :picker-options="pickerOptions">
                 </el-date-picker>
             </el-form-item>
-            <el-form-item label="活动范围">
+            <el-form-item prop="region" label="活动范围">
                 <el-select clearable filterable v-model="form.region" placeholder="请选择活动范围">
                     <el-option  v-for="item in clothesTypes"
                                 :key="item.cltId"
@@ -151,7 +151,7 @@
                                 :value="item.cltId"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="活动内容">
+            <el-form-item prop="actContent" label="活动内容">
                 <el-input
                         type="textarea"
                         :autosize="{ minRows: 2, maxRows: 4}"
@@ -177,10 +177,9 @@
         el: '#app',
         data: function() {
             return {
-                pleasett:'请选择活动地点',
                 queryForm:{},
                 form:{
-                    username:_name
+                    username:_name,
                 },
                 visible:false,
                 formInline: {},
@@ -226,10 +225,15 @@
             }
         },
         methods:{
+            added(){
+                this.visible = !this.visible;
+                this.form = {};
+            },
             /*修改活动  查询一个*/
             queryOne(id){
                 this.visible = !this.visible;
                 var _self = this;
+                var cityId = '';
                 _self.form={
                     actId:'',
                     name:'',
@@ -237,7 +241,7 @@
                     date:[],
                     actContent:'',
                     place:[],
-                    username:_name
+                    username:_name,
                 }
                 $.ajax({
                     url: '/main/system/queryOne?actId='+id,
@@ -251,10 +255,28 @@
                             _self.$forceUpdate();
                         });
                         _self.form.actContent = resp[0].actContent;
-                        _self.place = resp[0].city.cityName;
+                        cityId = resp[0].city.id;
                         _self.form.region = resp[0].clothesType.cltId;
+
+                        $.ajax({
+                            url:'/main/system/getOneCity?cityId='+cityId,
+                            type:'get',
+                            dataType: "json",
+                            success: function (resp) {
+                                if (resp.grandpaId!=null){
+                                    _self.form.place=[resp.grandpaId,resp.parentId,resp.childId]
+                                }else if (resp.parentId!=null){
+                                     _self.form.place=[resp.parentId,resp.childId]
+                                }else if (resp.childId!=null){
+                                    _self.form.place=[resp.childId]
+                                }
+                            }
+                        })
+
                     }
                 })
+
+
             },
             /*删除活动*/
             dele(id){
@@ -315,7 +337,6 @@
                 this.visible = !this.visible;
                 var messages = '';
                 var src = '';
-                console.log(id)
                 if (id){
                     src = '/main/system/setact';
                     messages = '修改成功';

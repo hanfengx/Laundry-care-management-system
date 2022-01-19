@@ -54,7 +54,7 @@
         left join city c on
             ty.act_place = c.id
         <trim prefix="WHERE (" suffix=")" prefixOverrides="AND |OR ">
-            <if test="actName!='' ">ty.act_name = #{actName}</if>
+            <if test="actName!='' ">ty.act_name like concat('%','${actName}','%')</if>
             <if test="region!=''">and ty.act_scope = #{region}</if>
             <if test="startDate!=''">and ty.act_createdate >= #{startDate}</if>
             <if test="endDate!='' ">and  #{endDate} >= ty.act_enddate</if>

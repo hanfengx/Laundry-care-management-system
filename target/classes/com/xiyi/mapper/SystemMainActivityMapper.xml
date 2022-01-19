@@ -23,6 +23,15 @@
         </association>
     </resultMap>
 
+    <resultMap id="citys" type="com.xiyi.domain.City">
+        <result property="grandpaId" column="grandpaId"></result>
+        <result property="grandpaName" column="grandpaName"></result>
+        <result property="parentId" column="parentId"></result>
+        <result property="parentName" column="parentName"></result>
+        <result property="childId" column="childId"></result>
+        <result property="childName" column="childName"></result>
+    </resultMap>
+
 
     <insert id="addAct" parameterType="java.lang.Integer">
         insert into activity
@@ -81,5 +90,34 @@
             left join city c on
                 ty.act_place = c.id
         where ty.act_id = #{actId}
+    </select>
+    <select id="getOneCity" resultMap="citys" >
+        select
+            t.id 'grandpaId',
+                t.cityname 'grandpaName',
+                y.tId 'parentId',
+                y.tCityname 'parentName',
+                y.cId 'childId',
+                y.cCityname 'childName'
+        from
+            city t
+                right join (
+                select
+                    t.pid 'tPid',
+                        t.id 'tId',
+                        t.cityname 'tCityname',
+                        c.id 'cId',
+                        c.cityname 'cCityname'
+                from
+                    city t
+                        right join (
+                        select
+                            *
+                        from
+                            city c
+                        where
+                            c.id =#{cityId} ) c on
+                        c.pid = t.id) y on
+                y.tPid = t.id
     </select>
 </mapper>

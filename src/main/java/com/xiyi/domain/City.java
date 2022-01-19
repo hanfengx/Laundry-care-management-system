@@ -13,5 +13,17 @@ public class City {
 
     private Integer type;
 
+    private Integer grandpaId;
+
+    private String grandpaName;
+
+    private Integer parentId;
+
+    private String parentName;
+
+    private Integer childId;
+
+    private  String childName;
+
 
 }

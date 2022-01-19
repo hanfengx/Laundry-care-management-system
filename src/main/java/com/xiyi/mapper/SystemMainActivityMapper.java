@@ -1,6 +1,7 @@
 package com.xiyi.mapper;
 
 import com.xiyi.domain.Activity;
+import com.xiyi.domain.City;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -32,5 +33,7 @@ public interface SystemMainActivityMapper {
                           @Param("actRegion") String actRegion,
                           @Param("actContent")String actContent,
                           @Param("userName")String userName);
+
+    public City getOneCity(@Param("cityId") String cityId);
 
 }

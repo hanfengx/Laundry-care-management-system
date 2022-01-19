@@ -1,6 +1,7 @@
 package com.xiyi.service;
 
 import com.xiyi.domain.Activity;
+import com.xiyi.domain.City;
 import com.xiyi.mapper.SystemMainActivityMapper;
 import com.xiyi.service.Impservice.SystemMainActivityServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,5 +74,13 @@ public class SystemMainActivityService implements SystemMainActivityServiceImp {
         }
 
         return systemMainActivityMapper.setAct(actId,actName,startDate,endDate,placeId,actRegion,actContent,userName);
+    }
+
+    @Override
+    public City getOneCity(String cityId) {
+        City oneCity = systemMainActivityMapper.getOneCity(cityId);
+        
+
+        return systemMainActivityMapper.getOneCity(cityId);
     }
 }

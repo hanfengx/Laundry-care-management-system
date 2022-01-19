@@ -1,6 +1,8 @@
 package com.xiyi.service.Impservice;
 
 import com.xiyi.domain.Activity;
+import com.xiyi.domain.City;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -19,4 +21,6 @@ public interface SystemMainActivityServiceImp {
 
     public Integer setAct(int actId,String actName, List<String> actPlace,List<String> actDate,String actRegion,String actContent,String userName);
 
+
+    public City getOneCity(String cityId);
 }

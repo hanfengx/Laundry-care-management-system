@@ -1,6 +1,7 @@
 package com.xiyi.controller;
 
 import com.xiyi.domain.Activity;
+import com.xiyi.domain.City;
 import com.xiyi.service.Impservice.SystemMainActivityServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -67,6 +68,13 @@ public class SystemMainActivityController {
                           @RequestParam(value = "username",defaultValue = "",required = false) String userName){
         System.out.println("修改");
         return systemMainActivityServiceImp.setAct(actId,actName,actPlace,actDate,actRegion,actContent,userName);
+    }
+
+    /*获得一个城市的数组回显*/
+    @GetMapping("getOneCity")
+    public City getOneCity(@RequestParam("cityId") String cityId){
+
+        return systemMainActivityServiceImp.getOneCity(cityId);
     }
 
 
