@@ -31,7 +31,7 @@
                 </el-date-picker>
             </el-form-item>
             <el-form-item label="活动范围">
-                <el-select clearable filterable v-model="formInline.region" placeholder="范围">
+                <el-select clearable multiple collapse-tags filterable v-model="formInline.region" placeholder="范围">
                     <el-option  v-for="item in clothesTypes"
                                 :key="item.cltId"
                                 :label="item.cltName"
@@ -39,13 +39,13 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary"  @click="query()">查询</el-button>
+                <el-button type="primary" round size="small"  @click="query()">查询</el-button>
             </el-form-item>
         </el-form>
     </div>
     <div v-loading="loading"  >
-        <el-descriptions v-for="item in activity" style="margin-top: 10px"  class="margin-top" :column="3"  border>
-            <el-descriptions-item size="medium">
+        <el-descriptions  v-for="item in activity" style="margin-top: 10px"  class="margin-top" :column="3"  border>
+            <el-descriptions-item >
                 <template slot="label">
                     <i class="el-icon-tickets"></i>
                     活动名称
@@ -85,7 +85,7 @@
                     <i class="el-icon-edit"></i>
                     操作
                 </template>
-                <el-button type="primary" size="small">了解详情</el-button>
+                <el-button type="success" round size="small">了解详情</el-button>
             </el-descriptions-item>
         </el-descriptions>
     </div>
@@ -158,7 +158,6 @@
                 setTimeout(() => {
                     this.loading = false;
                 }, 1000);
-                console.log("触发")
             },
             /*条件查询*/
             query(){
@@ -171,14 +170,16 @@
                 this.loading = true;
                 this.loadings();
                 this.current.pageSize=val;
-                this.allActivity();
+                var formInline = this.formInline;
+                this.allActivity(formInline);
             },
             /*分页*/
             handleCurrentChange(val) {
                 this.loading = true;
                 this.loadings();
                 this.current.pageNum = val;
-                this.allActivity();
+                var formInline = this.formInline;
+                this.allActivity(formInline);
             },
 
             /*查询所有活动*/
@@ -186,7 +187,7 @@
                 var _self = this;
                 var current = _self.current;
                 $.ajax({
-                    url: "/main/activity?pageSize="+current.pageSize+"&pageNum="+current.pageNum,
+                    url: "/main/activity?pageSize="+current.pageSize+"&pageNum="+current.pageNum+"&system="+"0",
                     type:'get',
                     data:formInline,
                     dataType: "json",
@@ -206,8 +207,6 @@
                     dataType: "json",
                     success:function (resp){
                         _self.options = _self.getTreeData(resp);
-
-                        console.log(_self.options);
                     }
                 })
 

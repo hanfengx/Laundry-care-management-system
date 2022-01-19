@@ -119,7 +119,7 @@
                 </el-header>
                 <el-main>
 
-                    <iframe id="iframe" width="1460px" height="600px" frameBorder="false" scrolling="false" ></iframe>
+                    <iframe id="iframe" width="1460px" height="690px"  frameBorder="0" scrolling="false" ></iframe>
                 </el-main>
             </el-container>
         </el-container>

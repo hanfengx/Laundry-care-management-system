@@ -14,10 +14,11 @@ public interface MainActivityMapper {
 
 
     public List<Activity> allActivity(@Param("actName") String actName,
-                                      @Param("region") String region,
+                                      @Param("regions") String regions,
                                       @Param("startDate") String startDate,
                                       @Param("endDate")String endDate,
-                                      @Param("placeId") Integer placeId);
+                                      @Param("placeId") Integer placeId,
+                                      @Param("system") Integer system);
 
 
 

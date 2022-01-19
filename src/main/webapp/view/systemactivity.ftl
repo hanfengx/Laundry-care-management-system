@@ -37,7 +37,7 @@
                 </el-date-picker>
             </el-form-item>
             <el-form-item>
-                <el-select clearable filterable v-model="formInline.region" placeholder="活动范围">
+                <el-select multiple collapse-tags clearable filterable v-model="formInline.region" placeholder="活动范围">
                     <el-option  v-for="item in clothesTypes"
                                 :key="item.cltId"
                                 :label="item.cltName"
@@ -144,7 +144,7 @@
                 </el-date-picker>
             </el-form-item>
             <el-form-item prop="region" label="活动范围">
-                <el-select clearable filterable v-model="form.region" placeholder="请选择活动范围">
+                <el-select clearable  filterable v-model="form.region" placeholder="请选择活动范围">
                     <el-option  v-for="item in clothesTypes"
                                 :key="item.cltId"
                                 :label="item.cltName"
@@ -291,7 +291,8 @@
                                 message: '删除活动成功',
                                 type: 'success'
                             });
-                            _self.allActivity();
+                            var formInline = _self.formInline;
+                            _self.allActivity(formInline);
                         }
                     }
                 })
@@ -309,7 +310,8 @@
                                 message: '上线活动成功',
                                 type: 'success'
                             });
-                            _self.allActivity();
+                            var formInline = _self.formInline;
+                            _self.allActivity(formInline);
                         }
                     }
                 })
@@ -327,7 +329,8 @@
                                 message: '下线活动成功',
                                 type: 'success'
                             });
-                            _self.allActivity();
+                            var formInline = _self.formInline;
+                            _self.allActivity(formInline);
                         }
                     }
                 })
@@ -352,14 +355,13 @@
                     data:form,
                     dataType: "json",
                     success:function (resp) {
-                        _self.activity = resp.data;
-                        _self.total = resp.total;
                         if (resp>0){
                             _self.$message({
                                 message: messages,
                                 type: 'success'
                             });
-                            _self.allActivity();
+                            var formInline = _self.formInline;
+                            _self.allActivity(formInline);
                         }
                     }
                 })
@@ -380,14 +382,16 @@
                 this.loading = true;
                 this.loadings();
                 this.current.pageSize=val;
-                this.allActivity();
+                var formInline = this.formInline;
+                this.allActivity(formInline);
             },
             /*分页*/
             handleCurrentChange(val) {
                 this.loading = true;
                 this.loadings();
                 this.current.pageNum = val;
-                this.allActivity();
+                var formInline = this.formInline;
+                this.allActivity(formInline);
             },
 
             /*查询所有活动*/
@@ -396,7 +400,7 @@
                 var _self = this;
                 var current = _self.current;
                 $.ajax({
-                    url: "/main/activity?pageSize="+current.pageSize+"&pageNum="+current.pageNum,
+                    url: "/main/activity?pageSize="+current.pageSize+"&pageNum="+current.pageNum+"&system="+"1",
                     type:'get',
                     data:formInline,
                     dataType: "json",

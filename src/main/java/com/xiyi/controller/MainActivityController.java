@@ -35,11 +35,12 @@ public class MainActivityController {
             @RequestParam("pageSize") Integer pageSize,
             @RequestParam("pageNum") Integer pageNum,
             @RequestParam(value = "name",defaultValue = "",required = false) String actName,
-            @RequestParam(value ="region",defaultValue = "",required = false) String region,
+            @RequestParam(value ="region[]",defaultValue = "",required = false) List<String> region,
             @RequestParam(value ="date[]",defaultValue = "",required = false) List<String> date,
-            @RequestParam(value ="place[]",defaultValue = "",required = false) List<String> place){
+            @RequestParam(value ="place[]",defaultValue = "",required = false) List<String> place,
+            @RequestParam(value = "system",defaultValue = "0") Integer system){
 
-        PageResult pageResult =  mainActivityServiceImp.allActivity(pageSize,pageNum,actName,region,date,place);
+        PageResult pageResult =  mainActivityServiceImp.allActivity(pageSize,pageNum,actName,region,date,place,system);
         return pageResult;
     }
 

@@ -12,7 +12,7 @@ import java.util.Map;
 public interface MainActivityServiceImp {
 
     /*查询所有最新活动*/
-    public PageResult allActivity(Integer pageSize, Integer pageNum, String actName, String region,List<String> date,List<String> place);
+    public PageResult allActivity(Integer pageSize, Integer pageNum, String actName, List<String> region,List<String> date,List<String> place,Integer system);
 
     /*显示所有城市*/
     public List<Map<String, Object>> getCity();

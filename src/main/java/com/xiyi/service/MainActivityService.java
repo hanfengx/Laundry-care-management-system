@@ -23,7 +23,7 @@ public class MainActivityService implements MainActivityServiceImp {
 
     /*获取所有最新活动*/
     @Override
-    public PageResult allActivity(Integer pageSize, Integer pageNum, String actName, String region,List<String> date,List<String> place) {
+    public PageResult allActivity(Integer pageSize, Integer pageNum, String actName, List<String> region,List<String> date,List<String> place,Integer system) {
         PageHelper.startPage(pageNum,pageSize);
         /*提取搜索框日期*/
         String startDate = "";
@@ -38,7 +38,16 @@ public class MainActivityService implements MainActivityServiceImp {
         if (size!=0){
             placeId = Integer.parseInt(place.get(place.size()-1));
         }
-        List<Activity> list = mainActivityMapper.allActivity(actName,region,startDate,endDate,placeId);
+        String regions = "";
+        for (String type:region) {
+            regions += type+",";
+        }
+        if (!regions.isEmpty()){
+            //目标：删除最后一个 ","
+            regions = regions.substring(0, regions.length() - 1);
+        }
+        List<Activity> list = mainActivityMapper.allActivity(actName,regions,startDate,endDate,placeId,system);
+
         PageInfo pageInfo = new PageInfo(list);
         PageResult pageResult = new PageResult(pageInfo.getPageNum(),pageInfo.getPageSize(), (int) pageInfo.getTotal(),list);
 

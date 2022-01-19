@@ -53,12 +53,14 @@
             ty.act_scope = ct.clt_id
         left join city c on
             ty.act_place = c.id
-        <trim prefix="WHERE (" suffix=")" prefixOverrides="AND |OR ">
-            <if test="actName!='' ">ty.act_name like concat('%','${actName}','%')</if>
-            <if test="region!=''">and ty.act_scope = #{region}</if>
+        <trim prefix="WHERE " suffix="" prefixOverrides="AND |OR ">
+            1=1
+            <if test="actName!='' ">and ty.act_name like concat('%','${actName}','%')</if>
+            <if test="regions!=''">and ty.act_scope in (${regions})</if>
             <if test="startDate!=''">and ty.act_createdate >= #{startDate}</if>
             <if test="endDate!='' ">and  #{endDate} >= ty.act_enddate</if>
             <if test="placeId!=0">and ty.act_place = #{placeId}</if>
+            <if test="system!=1">and act_state=1</if>
         </trim>
         group by
             act_name

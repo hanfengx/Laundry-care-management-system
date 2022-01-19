@@ -79,8 +79,6 @@ public class SystemMainActivityService implements SystemMainActivityServiceImp {
     @Override
     public City getOneCity(String cityId) {
         City oneCity = systemMainActivityMapper.getOneCity(cityId);
-        
-
         return systemMainActivityMapper.getOneCity(cityId);
     }
 }

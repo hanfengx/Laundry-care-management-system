@@ -25,7 +25,6 @@ public class SystemMainActivityController {
                           @RequestParam(value = "actContent",defaultValue = "",required = false) String actContent,
                           @RequestParam(value = "username",defaultValue = "",required = false) String userName){
 
-        System.out.println("新增");
         return systemMainActivityServiceImp.addAct(actName,actPlace,actDate,actRegion,actContent,userName);
     }
 
@@ -66,7 +65,6 @@ public class SystemMainActivityController {
                           @RequestParam(value = "region",defaultValue = "",required = false) String actRegion,
                           @RequestParam(value = "actContent",defaultValue = "",required = false) String actContent,
                           @RequestParam(value = "username",defaultValue = "",required = false) String userName){
-        System.out.println("修改");
         return systemMainActivityServiceImp.setAct(actId,actName,actPlace,actDate,actRegion,actContent,userName);
     }
 
