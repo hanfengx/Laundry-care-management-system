@@ -51,7 +51,7 @@
         </el-form>
     </div>
     <div v-loading="loading"  >
-        <el-descriptions v-for="item in activity" style="margin-top: 10px"  class="margin-top" :column="3"  border>
+        <el-descriptions v-for="item in activity" style="margin-top: 10px"  class="margin-top" :column="4"  border>
             <el-descriptions-item size="medium">
                 <template slot="label">
                     <i class="el-icon-tickets"></i>
@@ -65,6 +65,13 @@
                     活动范围
                 </template>
                 {{item.clothesType.cltName}}
+            </el-descriptions-item>
+            <el-descriptions-item>
+                <template slot="label">
+                    <i class="el-icon-s-goods"></i>
+                    活动折扣
+                </template>
+                {{item.actDiscount/10}}折
             </el-descriptions-item>
             <el-descriptions-item>
                 <template slot="label">
@@ -185,6 +192,9 @@
                             ]">
                 <el-col :span="8">
                     <el-input
+                            show-word-limit
+                            type="text"
+                            maxlength="2"
                             clearable
                             v-model.number="form.actDiscount"
                             placeholder="请输入折扣"

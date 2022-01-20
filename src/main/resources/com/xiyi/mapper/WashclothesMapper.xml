@@ -3,8 +3,9 @@
 <mapper namespace="com.xiyi.mapper.WashclothesMapper">
 
     <resultMap id="activity" type="com.xiyi.domain.Activity">
-        <result property="actId" column="act_id"></result>
-        <result property="actName" column="act_name"></result>
+        <result property="actId" column="act_id"/>
+        <result property="actName" column="act_name"/>
+        <result property="actDiscount" column="act_discount"/>
     </resultMap>
 
     <select id="getActivity" resultMap="activity">
