@@ -280,6 +280,8 @@
             },
             /*删除活动*/
             dele(id){
+                this.loading = true;
+                this.loadings();
                 var _self = this;
                 $.ajax({
                     url: '/main/system/delete?actId='+id,
@@ -337,6 +339,8 @@
             },
             /*新增活动*/
             add(id){
+                this.loading = true;
+                this.loadings();
                 this.visible = !this.visible;
                 var messages = '';
                 var src = '';
@@ -396,6 +400,7 @@
 
             /*查询所有活动*/
             allActivity(formInline){
+                this.loading = true;
                 this.loadings();
                 var _self = this;
                 var current = _self.current;

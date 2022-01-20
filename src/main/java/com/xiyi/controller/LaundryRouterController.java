@@ -4,7 +4,6 @@ package com.xiyi.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -49,6 +48,12 @@ public class LaundryRouterController {
     public ModelAndView systemActivity(@RequestParam("username") String userName, Model mm){
         mm.addAttribute("userName",userName);
         modelAndView.setViewName("systemactivity");
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/laundry/washClothes")
+    public ModelAndView washClothes(){
+        modelAndView.setViewName("washclothes");
         return modelAndView;
     }
 

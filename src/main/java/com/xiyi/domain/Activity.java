@@ -20,6 +20,8 @@ public class Activity {
 
     private String actOriginator;
 
+    private String actDiscount;
+
     private String actContent;
 
     private String actPlace;

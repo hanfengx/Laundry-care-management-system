@@ -39,7 +39,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" round size="small"  @click="query()">查询</el-button>
+                <el-button type="primary" round   @click="query()">查询</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -161,6 +161,7 @@
             },
             /*条件查询*/
             query(){
+                this.loading = true;
                 this.loadings();
                 var formInline = this.formInline;
                 this.allActivity(formInline);

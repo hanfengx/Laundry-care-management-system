@@ -136,7 +136,7 @@
             return {
                 title:[
                     {tit: '最新活动',url:'/laundry/activity'},
-                    {tit: '我要洗衣',url:'/2'},
+                    {tit: '我要洗衣',url:'/laundry/washClothes'},
                     {tit: '订单管理',url:'/3'},
                     {tit: '会员中心',url:'/4'},
                     {tit: '常见问题',url:'/5'}
@@ -156,7 +156,8 @@
             },
 
             handleSelect(key, keyPath) {
-
+                var iframe = document.getElementById("iframe")
+                iframe.src=keyPath;
             },
 
         },

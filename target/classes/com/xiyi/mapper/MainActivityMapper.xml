@@ -11,6 +11,7 @@
         <result property="actContent" column="act_content"/>
         <result property="actScope" column="act_scope"/>
         <result property="actState" column="act_state"/>
+        <result property="actDiscount" column="act_discount"/>
         <association property="clothesType" javaType="ClothesType">
             <id property="cltId" column="clt_id"></id>
             <result property="cltName" column="clt_name"></result>
@@ -45,6 +46,7 @@
             ty.act_originator,
             ty.act_content,
             ty.act_state,
+            ty.act_discount,
             c.cityname,
             group_concat(distinct ct.clt_name) clt_name
         from
