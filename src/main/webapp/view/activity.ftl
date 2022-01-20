@@ -44,7 +44,7 @@
         </el-form>
     </div>
     <div v-loading="loading"  >
-        <el-descriptions  v-for="item in activity" style="margin-top: 10px"  class="margin-top" :column="3"  border>
+        <el-descriptions  v-for="item in activity" style="margin-top: 10px"  class="margin-top" :column="4"  border>
             <el-descriptions-item >
                 <template slot="label">
                     <i class="el-icon-tickets"></i>
@@ -52,12 +52,19 @@
                 </template>
                 {{item.actName}}
             </el-descriptions-item>
-            <el-descriptions-item>
+            <el-descriptions-item content-class-name="scopes">
                 <template slot="label">
                     <i class="el-icon-scissors"></i>
                     活动范围
                 </template>
                 {{item.clothesType.cltName}}
+            </el-descriptions-item>
+            <el-descriptions-item>
+                <template slot="label">
+                    <i class="el-icon-s-goods"></i>
+                    活动折扣
+                </template>
+                {{item.actDiscount*10}}折
             </el-descriptions-item>
             <el-descriptions-item>
                 <template slot="label">
@@ -73,7 +80,7 @@
                 </template>
                 <el-tag>{{item.city.cityName}}</el-tag>
             </el-descriptions-item>
-            <el-descriptions-item>
+            <el-descriptions-item content-class-name="time">
                 <template slot="label">
                     <i class="el-icon-date"></i>
                     活动时间
@@ -85,7 +92,7 @@
                     <i class="el-icon-edit"></i>
                     操作
                 </template>
-                <el-button type="success" round size="small">了解详情</el-button>
+                <el-button type="success" round size="small">立即参与</el-button>
             </el-descriptions-item>
         </el-descriptions>
     </div>

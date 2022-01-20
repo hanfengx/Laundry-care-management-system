@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiyi.mapper.WashclothesMapper">
+
+    <resultMap id="activity" type="com.xiyi.domain.Activity">
+        <result property="actId" column="act_id"></result>
+        <result property="actName" column="act_name"></result>
+    </resultMap>
+
+    <select id="getActivity" resultMap="activity">
+
+    </select>
+</mapper>

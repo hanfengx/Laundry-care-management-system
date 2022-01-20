@@ -92,10 +92,15 @@
                     <i class="el-icon-edit"></i>
                     操作
                 </template>
-                <el-button  type="primary" @click="queryOne(item.actId)" round size="small">修改</el-button>
-                <el-button v-show="item.actState==2||item.actState==0" @click="actOnline(item.actId)" type="success" round size="small">上线活动</el-button>
-                <el-button v-show="item.actState==1" type="warning" @click="actOffline(item.actId)" round size="small">下线活动</el-button>
-                <el-button type="danger" round @click="dele(item.actId)" size="small">删除</el-button>
+                <el-button style="margin-left: 20px" type="primary" @click="queryOne(item.actId)" round size="small">修改</el-button>
+                <el-button style="margin-left: 20px" v-show="item.actState==2||item.actState==0" @click="actOnline(item.actId)" type="success" round size="small">上线活动</el-button>
+                <el-button style="margin-left: 20px"  v-show="item.actState==1" type="warning" @click="actOffline(item.actId)" round size="small">下线活动</el-button>
+                <template>
+                    <el-popconfirm title="确定删除吗？" @confirm="dele(item.actId)">
+                        <el-button style="margin-left: 20px"  slot="reference" type="danger" round @click="" size="small">删除</el-button>
+                    </el-popconfirm>
+                </template>
+
             </el-descriptions-item>
         </el-descriptions>
     </div>
@@ -113,13 +118,23 @@
 
     <#--增加或修改活动-->
     <el-dialog title="活动" :visible.sync="visible">
-        <el-form :model="form" label-width="80px">
-            <el-form-item prop="name" label="活动名称">
+        <el-form :model="form" ref="form"  label-width="80px">
+            <el-form-item
+                    prop="name"
+                    label="活动名称"
+                    :rules="[
+                              { required: true, message: '活动内容不能为空'}
+                            ]">
                 <el-col :span="8">
                     <el-input  v-model="form.name" placeholder="请输入内容"></el-input>
                 </el-col>
             </el-form-item>
-            <el-form-item prop="place" label="活动地点">
+            <el-form-item
+                    prop="place"
+                    label="活动地点"
+                    :rules="[
+                              { required: true, message: '活动地点不能为空'}
+                            ]">
                 <el-cascader
                         :props="{ checkStrictly: true }"
                         v-model="form.place"
@@ -130,7 +145,12 @@
                         :show-all-levels="false"></el-cascader>
             </el-form-item>
 
-            <el-form-item prop="date" label="活动时间">
+            <el-form-item
+                    prop="date"
+                    label="活动时间"
+                    :rules="[
+                              { required: true, message: '活动日期不能为空'}
+                            ]">
                 <el-date-picker
                         v-model="form.date"
                         type="daterange"
@@ -143,13 +163,33 @@
                         :picker-options="pickerOptions">
                 </el-date-picker>
             </el-form-item>
-            <el-form-item prop="region" label="活动范围">
+            <el-form-item
+                    prop="region"
+                    label="活动范围"
+                    :rules="[
+                              { required: true, message: '活动范围不能为空'}
+                            ]">
                 <el-select clearable  filterable v-model="form.region" placeholder="请选择活动范围">
                     <el-option  v-for="item in clothesTypes"
                                 :key="item.cltId"
                                 :label="item.cltName"
                                 :value="item.cltId"></el-option>
                 </el-select>
+            </el-form-item>
+            <el-form-item
+                    prop="actDiscount"
+                    label="活动折扣"
+                    :rules="[
+                              { required: true, message: '折扣不能为空'},
+                              { type: 'number', message: '折扣必须为数字值'}
+                            ]">
+                <el-col :span="8">
+                    <el-input
+                            clearable
+                            v-model.number="form.actDiscount"
+                            placeholder="请输入折扣"
+                            ></el-input>
+                </el-col>
             </el-form-item>
             <el-form-item prop="actContent" label="活动内容">
                 <el-input
@@ -162,7 +202,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button type="danger"  @click="visible = false">取 消</el-button>
-            <el-button type="primary" @click="add(form.actId)">确 定</el-button>
+            <el-button type="primary" @click="add(form.actId,'form')">确 定</el-button>
         </div>
     </el-dialog>
 </div>
@@ -227,7 +267,9 @@
         methods:{
             added(){
                 this.visible = !this.visible;
-                this.form = {};
+                this.form = {
+                    username:_name,
+                };
             },
             /*修改活动  查询一个*/
             queryOne(id){
@@ -241,7 +283,7 @@
                     date:[],
                     actContent:'',
                     place:[],
-                    username:_name,
+                    username:_self.username,
                 }
                 $.ajax({
                     url: '/main/system/queryOne?actId='+id,
@@ -257,7 +299,7 @@
                         _self.form.actContent = resp[0].actContent;
                         cityId = resp[0].city.id;
                         _self.form.region = resp[0].clothesType.cltId;
-
+                        /*回显城市  数组*/
                         $.ajax({
                             url:'/main/system/getOneCity?cityId='+cityId,
                             type:'get',
@@ -338,10 +380,7 @@
                 })
             },
             /*新增活动*/
-            add(id){
-                this.loading = true;
-                this.loadings();
-                this.visible = !this.visible;
+            add(id,forms){
                 var messages = '';
                 var src = '';
                 if (id){
@@ -352,23 +391,35 @@
                     messages = '添加成功';
                 }
                 var _self = this;
-                var form = _self.form;
-                $.ajax({
-                    url:src,
-                    type:'post',
-                    data:form,
-                    dataType: "json",
-                    success:function (resp) {
-                        if (resp>0){
-                            _self.$message({
-                                message: messages,
-                                type: 'success'
-                            });
-                            var formInline = _self.formInline;
-                            _self.allActivity(formInline);
-                        }
+                var forms = forms;
+                var form = this.form;
+                this.$refs[forms].validate((valid) => {
+                    if (valid) {
+                        $.ajax({
+                            url:src,
+                            type:'post',
+                            data:form,
+                            dataType: "json",
+                            success:function (resp) {
+                                if (resp>0){
+                                    _self.$message({
+                                        message: messages,
+                                        type: 'success'
+                                    });
+                                    var formInline = _self.formInline;
+                                    _self.allActivity(formInline);
+                                }
+                            }
+                        })
+                        this.visible = !this.visible;
+                        this.loading = true;
+                        this.loadings();
+                    } else {
+                        _self.$message.error('新增失败,请修改后重新添加！');
+                        return false;
                     }
-                })
+                });
+
             },
             loadings(){
                 setTimeout(() => {
