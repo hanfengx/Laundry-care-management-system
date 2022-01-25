@@ -1,6 +1,7 @@
 package com.xiyi.service;
 
 import com.xiyi.domain.Activity;
+import com.xiyi.domain.City;
 import com.xiyi.mapper.WashclothesMapper;
 import com.xiyi.service.Impservice.WashclothesServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,5 +17,10 @@ public class WashclothesService implements WashclothesServiceImp {
     @Override
     public List<Activity> getActivity() {
         return washclothesMapper.getActivity();
+    }
+
+    @Override
+    public List<City> getCity(String actId) {
+        return washclothesMapper.getCity(actId);
     }
 }

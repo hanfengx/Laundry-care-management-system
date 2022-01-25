@@ -23,20 +23,25 @@
             <el-form ref="form" :model="form" >
                     <el-form-item  label="活动名称">
                         <el-col :span="4">
-                            <el-option
-                                    v-for="item in actOptions"
-                                    :key="item.value"
-                                    :label="item.actName"
-                                    :value="item.actId">
-                            </el-option>
+                            <el-select v-model="actOptions.actId">
+                                <el-option
+                                        v-for="item in actOptions"
+                                        :label="item.actName"
+                                        :value="item.actId"
+                                        @click.native='option(item.actId)'>
+                                </el-option>
                             </el-select>
                         </el-col>
                     </el-form-item>
-                    <el-form-item label="活动区域">
-                        <el-select v-model="form.region" placeholder="请选择活动区域">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
-                        </el-select>
+                    <el-form-item label="活动地点">
+                        <el-cascader
+                                :props="{ checkStrictly: true }"
+                                v-model="form.place"
+                                :options="form.place"
+                                clearable
+                                placeholder="请选择活动地点"
+                                filterable
+                                :show-all-levels="false"></el-cascader>
                     </el-form-item>
                     <el-form-item label="活动时间">
                         <el-col :span="4">
@@ -82,7 +87,10 @@
         el: '#app',
         data: function() {
             return {
+                options:[],
+                actOptions:[],
                 form: {
+                    place:[],
                     name: '',
                     region: '',
                     date1: '',
@@ -95,9 +103,51 @@
             }
         },
         methods:{
+            /*根据选择的活动确定城市*/
+            option(id){
+              var _self = this;
+              $.ajax({
+                  type:'get',
+                  dataType: "json",
+                  url:'/washclothes/getCity?actId='+id,
+                  success:function (resp){
+                      if (resp.grandpaId!=null){
+                          _self.form.place=[resp.grandpaId,resp.parentId,resp.childId]
+                          _self.options.value = resp.grandpaId;
+                          _self.options.label = resp.grandpaName;
+                          _self.options.children.value = resp.parentId;
+                          _self.options.children.label = resp.parentName;
+                          _self.options.children.children.value = resp.childId;
+                          _self.options.children.children.label = resp.childName;
+
+                      }else if (resp.parentId!=null){
+                          _self.form.place=[resp.parentId,resp.childId]
+                          _self.options.value = resp.parentId;
+                          _self.options.label = resp.parentName;
+                          _self.options.children.value = resp.childId;
+                          _self.options.children.label = resp.childName;
+                      }else if (resp.childId!=null){
+                          _self.form.place=[resp.childId]
+                          _self.options.value = resp.childId;
+                          _self.options.label = resp.childName;
+                      }
+                      console.log(_self.options);
+                      console.log(_self.form.place);
+                  }
+              })
+            },
             /*活动名称下拉框*/
             selectAct(){
+                var _self = this;
+                $.ajax({
+                    url: '/washclothes/getActivity',
+                    type: 'get',
+                    dataType: "json",
+                    success: function (resp) {
+                        _self.actOptions = resp;
+                    }
 
+                })
             },
             onSubmit() {
                 console.log('submit!');

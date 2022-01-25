@@ -8,7 +8,51 @@
         <result property="actDiscount" column="act_discount"/>
     </resultMap>
 
-    <select id="getActivity" resultMap="activity">
+    <resultMap id="city" type="com.xiyi.domain.City">
+        <result property="grandpaId" column="grandpaId"/>
+        <result property="grandpaName" column="grandpaName"/>
+        <result property="parentId" column="parentId"/>
+        <result property="parentName" column="parentName"/>
+        <result property="childId" column="childId"/>
+        <result property="childName" column="childName"/>
+    </resultMap>
 
+    <select id="getActivity" resultMap="activity">
+        select act_id,act_name,act_discount from activity
+    </select>
+    <select id="getCity" parameterType="java.lang.String" resultMap="city"  >
+        select
+            t.id 'grandpaId',
+                t.cityname 'grandpaName',
+                y.tId 'parentId',
+                y.tCityname 'parentName',
+                y.cId 'childId',
+                y.cCityname 'childName'
+        from
+            city t
+                right join (
+                select
+                    t.pid 'tPid',
+                        t.id 'tId',
+                        t.cityname 'tCityname',
+                        c.id 'cId',
+                        c.cityname 'cCityname'
+                from
+                    city t
+                        right join (
+                        select
+                            *
+                        from
+                            city c
+                        where
+                                c.id =(
+                                select
+                                    a.act_place
+                                from
+                                    activity a
+                                where
+                                    a.act_id = #{actId}) ) c on
+                        c.pid = t.id) y on
+                y.tPid = t.id
     </select>
 </mapper>
