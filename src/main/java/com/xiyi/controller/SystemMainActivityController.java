@@ -64,8 +64,9 @@ public class SystemMainActivityController {
                           @RequestParam(value = "date[]",defaultValue = "",required = false) List<String> actDate,
                           @RequestParam(value = "region",defaultValue = "",required = false) String actRegion,
                           @RequestParam(value = "actContent",defaultValue = "",required = false) String actContent,
-                          @RequestParam(value = "username",defaultValue = "",required = false) String userName){
-        return systemMainActivityServiceImp.setAct(actId,actName,actPlace,actDate,actRegion,actContent,userName);
+                          @RequestParam(value = "username",defaultValue = "",required = false) String userName,
+                          @RequestParam(value = "actDiscount",defaultValue = "",required = false) String actDiscount){
+        return systemMainActivityServiceImp.setAct(actId,actName,actPlace,actDate,actRegion,actContent,userName,actDiscount);
     }
 
     /*获得一个城市的数组回显*/

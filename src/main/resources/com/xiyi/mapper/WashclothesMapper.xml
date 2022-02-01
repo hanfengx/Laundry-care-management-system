@@ -6,6 +6,8 @@
         <result property="actId" column="act_id"/>
         <result property="actName" column="act_name"/>
         <result property="actDiscount" column="act_discount"/>
+        <result property="actPlace" column="act_place"/>
+        <result property="cyType" column="cy_type"/>
     </resultMap>
 
     <resultMap id="city" type="com.xiyi.domain.City">
@@ -15,44 +17,21 @@
         <result property="parentName" column="parentName"/>
         <result property="childId" column="childId"/>
         <result property="childName" column="childName"/>
+        <result property="type" column="cy_type"/>
+        <result property="id" column="id"/>
+        <result property="pId" column="pid"/>
+        <result property="cityName" column="cityname"/>
     </resultMap>
 
     <select id="getActivity" resultMap="activity">
-        select act_id,act_name,act_discount from activity
-    </select>
-    <select id="getCity" parameterType="java.lang.String" resultMap="city"  >
         select
-            t.id 'grandpaId',
-                t.cityname 'grandpaName',
-                y.tId 'parentId',
-                y.tCityname 'parentName',
-                y.cId 'childId',
-                y.cCityname 'childName'
+            *
         from
-            city t
-                right join (
-                select
-                    t.pid 'tPid',
-                        t.id 'tId',
-                        t.cityname 'tCityname',
-                        c.id 'cId',
-                        c.cityname 'cCityname'
-                from
-                    city t
-                        right join (
-                        select
-                            *
-                        from
-                            city c
-                        where
-                                c.id =(
-                                select
-                                    a.act_place
-                                from
-                                    activity a
-                                where
-                                    a.act_id = #{actId}) ) c on
-                        c.pid = t.id) y on
-                y.tPid = t.id
+            activity a
+        left join city c on
+            a.act_place = c.id
     </select>
+
+
+
 </mapper>

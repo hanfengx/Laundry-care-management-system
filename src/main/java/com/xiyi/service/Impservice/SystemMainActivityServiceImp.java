@@ -19,7 +19,7 @@ public interface SystemMainActivityServiceImp {
 
     public List<Activity> queryOne(String actId);
 
-    public Integer setAct(int actId,String actName, List<String> actPlace,List<String> actDate,String actRegion,String actContent,String userName);
+    public Integer setAct(int actId,String actName, List<String> actPlace,List<String> actDate,String actRegion,String actContent,String userName,String actDiscount);
 
 
     public City getOneCity(String cityId);

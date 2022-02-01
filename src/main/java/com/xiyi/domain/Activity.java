@@ -34,6 +34,8 @@ public class Activity {
 
     private City city;
 
+    private String cyType;
+
 
 
 }

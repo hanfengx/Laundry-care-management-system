@@ -20,4 +20,6 @@ public interface MainActivityServiceImp {
     /*衣服类型*/
     public List<ClothesType> clothesType();
 
+
+
 }

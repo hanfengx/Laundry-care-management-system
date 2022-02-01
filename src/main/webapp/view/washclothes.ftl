@@ -28,7 +28,7 @@
                                         v-for="item in actOptions"
                                         :label="item.actName"
                                         :value="item.actId"
-                                        @click.native='option(item.actId)'>
+                                        @click.native='option(item.actPlace,item.cyType)'>
                                 </el-option>
                             </el-select>
                         </el-col>
@@ -37,7 +37,18 @@
                         <el-cascader
                                 :props="{ checkStrictly: true }"
                                 v-model="form.place"
-                                :options="form.place"
+                                :options="options"
+                                clearable
+                                placeholder="请选择活动地点"
+                                filterable
+                                :disabled="disabled"
+                                :show-all-levels="false"></el-cascader>
+                    </el-form-item>
+                    <el-form-item v-if="detailedCity" label="详细地点">
+                        <el-cascader
+                                :props="{ checkStrictly: true }"
+                                v-model="form.placeChild"
+                                :options="optionsChild"
                                 clearable
                                 placeholder="请选择活动地点"
                                 filterable
@@ -87,9 +98,13 @@
         el: '#app',
         data: function() {
             return {
+                optionsChild:[],
+                detailedCity:false,
+                disabled:true,
                 options:[],
                 actOptions:[],
                 form: {
+                    placeChild:[],
                     place:[],
                     name: '',
                     region: '',
@@ -103,38 +118,67 @@
             }
         },
         methods:{
-            /*根据选择的活动确定城市*/
-            option(id){
+            option(cityId,type){
+                var _self = this;
+
+
+
+                $.ajax({
+                    type:'get',
+                    dataType: "json",
+                    url:'/main/system/getOneCity?cityId='+cityId,
+                    success:function (resp){
+                        if (resp.grandpaId!=null){
+                            _self.form.place=[resp.grandpaId,resp.parentId,resp.childId]
+                        }else if (resp.parentId!=null){
+                            _self.form.place=[resp.parentId,resp.childId]
+                        }else if (resp.childId!=null){
+                            _self.form.place=[resp.childId]
+                        }
+                    }
+                })
+
+                /*如果存在子节点*/
+                if (type!=3){
+                    _self.detailedCity = true;
+                    $.ajax({
+                        type:'get',
+                        dataType: "json",
+                        url:'/washclothes/getChildCity?cityId='+cityId,
+                        success:function (resp){
+                            _self.optionsChild = _self.getTreeData(resp);
+                        }
+                    })
+                }else {
+                    _self.detailedCity = false;
+                }
+            },
+            /*查询所有城市*/
+            getAllCity(){
               var _self = this;
               $.ajax({
                   type:'get',
                   dataType: "json",
-                  url:'/washclothes/getCity?actId='+id,
+                  url:'/washclothes/getAllCity',
                   success:function (resp){
-                      if (resp.grandpaId!=null){
-                          _self.form.place=[resp.grandpaId,resp.parentId,resp.childId]
-                          _self.options.value = resp.grandpaId;
-                          _self.options.label = resp.grandpaName;
-                          _self.options.children.value = resp.parentId;
-                          _self.options.children.label = resp.parentName;
-                          _self.options.children.children.value = resp.childId;
-                          _self.options.children.children.label = resp.childName;
-
-                      }else if (resp.parentId!=null){
-                          _self.form.place=[resp.parentId,resp.childId]
-                          _self.options.value = resp.parentId;
-                          _self.options.label = resp.parentName;
-                          _self.options.children.value = resp.childId;
-                          _self.options.children.label = resp.childName;
-                      }else if (resp.childId!=null){
-                          _self.form.place=[resp.childId]
-                          _self.options.value = resp.childId;
-                          _self.options.label = resp.childName;
-                      }
-                      console.log(_self.options);
-                      console.log(_self.form.place);
+                      _self.options =_self.getTreeData(resp);
                   }
               })
+            },
+            // 递归方法  去除chilren的空数组
+            getTreeData(data){
+                // 循环遍历json数据
+                for(var i=0;i<data.length;i++){
+
+                    if(data[i].children.length<1){
+                        // children若为空数组，则将children设为undefined
+                        data[i].children=undefined;
+                    }else {
+                        // children若不为空数组，则继续 递归调用 本方法
+                        this.getTreeData(data[i].children);
+                    }
+                }
+                return data;
             },
             /*活动名称下拉框*/
             selectAct(){
@@ -155,6 +199,7 @@
         },
         created(){
             this.selectAct();
+            this.getAllCity();
 
         }
     })

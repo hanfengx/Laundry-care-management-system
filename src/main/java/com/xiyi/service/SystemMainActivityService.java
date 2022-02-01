@@ -57,7 +57,7 @@ public class SystemMainActivityService implements SystemMainActivityServiceImp {
     }
 
     @Override
-    public Integer setAct(int actId, String actName, List<String> actPlace, List<String> actDate, String actRegion, String actContent, String userName) {
+    public Integer setAct(int actId, String actName, List<String> actPlace, List<String> actDate, String actRegion, String actContent, String userName,String actDiscount) {
         /*过滤添加的数据*/
         /*提取搜索框日期*/
         String startDate = "";
@@ -73,7 +73,7 @@ public class SystemMainActivityService implements SystemMainActivityServiceImp {
             placeId = Integer.parseInt(actPlace.get(actPlace.size()-1));
         }
 
-        return systemMainActivityMapper.setAct(actId,actName,startDate,endDate,placeId,actRegion,actContent,userName);
+        return systemMainActivityMapper.setAct(actId,actName,startDate,endDate,placeId,actRegion,actContent,userName,actDiscount);
     }
 
     @Override

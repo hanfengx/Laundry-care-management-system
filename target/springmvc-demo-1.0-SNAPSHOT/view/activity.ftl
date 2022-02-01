@@ -64,7 +64,7 @@
                     <i class="el-icon-s-goods"></i>
                     活动折扣
                 </template>
-                {{item.actDiscount*10}}折
+                {{item.actDiscount/10}}折
             </el-descriptions-item>
             <el-descriptions-item>
                 <template slot="label">

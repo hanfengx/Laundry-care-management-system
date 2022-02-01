@@ -2,6 +2,7 @@ package com.xiyi.controller;
 
 import com.xiyi.domain.Activity;
 import com.xiyi.domain.City;
+import com.xiyi.service.Impservice.MainActivityServiceImp;
 import com.xiyi.service.Impservice.WashclothesServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -18,6 +20,9 @@ public class WashclothesController {
     @Autowired
     private WashclothesServiceImp washclothesServiceImp;
 
+    @Autowired
+    private MainActivityServiceImp mainActivityServiceImp;
+
     /*查询活动列表*/
     @GetMapping("getActivity")
     public List<Activity> getActivity(){
@@ -25,11 +30,18 @@ public class WashclothesController {
         return washclothesServiceImp.getActivity();
     }
 
-    /*根据活动id确定城市*/
-    @GetMapping("getCity")
-    public List<City> getCity(@RequestParam("actId") String actId){
+    /*获取所有城市*/
+    @GetMapping("getAllCity")
+    public List<Map<String, Object>> getAllCity(){
 
-        return washclothesServiceImp.getCity(actId);
+        return mainActivityServiceImp.getCity();
+    }
+
+    /*回显子节点城市*/
+    @GetMapping("getChildCity")
+    public List<Map<String, Object>> getChildCity(@RequestParam("cityId") String cityId){
+
+        return washclothesServiceImp.getChildCity(cityId);
     }
 
 }

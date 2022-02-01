@@ -74,6 +74,7 @@
             <if test="actContent!=null  ||actContent!=''">act_content=#{actContent},</if>
             <if test="placeId!=null||placeId!=0">act_place=#{placeId},</if>
             <if test="actRegion!=null||actRegion!=''">act_scope=#{actRegion}</if>
+            <if test="actDiscount!=null||actDiscount!=''">act_discount=#{actDiscount}</if>
         </trim>
         where act_id = #{actId};
 
