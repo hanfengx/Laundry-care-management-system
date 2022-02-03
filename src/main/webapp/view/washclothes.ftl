@@ -20,75 +20,123 @@
     <div id="app" >
         <div style="background-color: white;height: 520px;width: 1450px">
             <div style="height: 10px"></div>
-            <el-form ref="form" :model="form" >
-                    <el-form-item  label="活动名称">
-                        <el-col :span="4">
-                            <el-select v-model="actOptions.actId">
+            <el-form ref="form" label-width="100px" :model="form" >
+                <el-row>
+                    <el-col :span="8">
+                        <el-form-item  label="活动名称">
+                            <el-select
+                                    @clear="setValueNull()"
+                                    v-model="actOptions.actId"
+                                    clearable
+                                    filterable>
                                 <el-option
                                         v-for="item in actOptions"
                                         :label="item.actName"
                                         :value="item.actId"
-                                        @click.native='option(item.actPlace,item.cyType)'>
+                                        @click.native='option(item.actPlace,item.actScope)'>
                                 </el-option>
                             </el-select>
-                        </el-col>
-                    </el-form-item>
-                    <el-form-item label="活动地点">
-                        <el-cascader
-                                :props="{ checkStrictly: true }"
-                                v-model="form.place"
-                                :options="options"
-                                clearable
-                                placeholder="请选择活动地点"
-                                filterable
-                                :disabled="disabled"
-                                :show-all-levels="false"></el-cascader>
-                    </el-form-item>
-                    <el-form-item v-if="detailedCity" label="详细地点">
-                        <el-cascader
-                                :props="{ checkStrictly: true }"
-                                v-model="form.placeChild"
-                                :options="optionsChild"
-                                clearable
-                                placeholder="请选择活动地点"
-                                filterable
-                                :show-all-levels="false"></el-cascader>
-                    </el-form-item>
-                    <el-form-item label="活动时间">
-                        <el-col :span="4">
-                            <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
-                        </el-col>
-                        <el-col class="line" :span="0.45">-</el-col>
-                        <el-col :span="4">
-                            <el-time-picker placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
-                        </el-col>
-                    </el-form-item>
-                    <el-form-item label="即时配送">
-                        <el-switch v-model="form.delivery"></el-switch>
-                    </el-form-item>
-                    <el-form-item label="活动性质">
-                        <el-checkbox-group v-model="form.type">
-                            <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-                            <el-checkbox label="地推活动" name="type"></el-checkbox>
-                            <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-                            <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-                        </el-checkbox-group>
-                    </el-form-item>
-                    <el-form-item label="特殊资源">
-                        <el-radio-group v-model="form.resource">
-                            <el-radio label="线上品牌商赞助"></el-radio>
-                            <el-radio label="线下场地免费"></el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-                    <el-form-item label="活动形式">
-                        <el-col :span="8">
-                            <el-input type="textarea" v-model="form.desc"></el-input>
-                        </el-col>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="onSubmit">立即创建</el-button>
-                        <el-button>取消</el-button>
-                    </el-form-item>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="活动地点">
+                            <el-cascader
+                                    :props="{ checkStrictly: true }"
+                                    v-model="form.place"
+                                    :key="optionsKey"
+                                    :options="options"
+                                    clearable
+                                    placeholder="请选择活动地点"
+                                    filterable
+                                    :show-all-levels="false"></el-cascader>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <#--第二排-->
+                <el-row>
+                    <el-col :span="8">
+                        <el-form-item label="配送时间">
+                            <el-col :span="9">
+                                <el-date-picker
+                                        type="date"
+                                        placeholder="选择日期"
+                                        v-model="form.date"
+                                        style="width: 100%;"
+                                        format="yyyy 年 MM 月 dd 日"
+                                        value-format="yyyy-MM-dd"></el-date-picker>
+                            </el-col>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="即时配送">
+                            <el-switch v-model="form.delivery"></el-switch>
+                        </el-form-item>
+                    </el-col>
+
+                </el-row>
+                <#--第三排-->
+                <el-row>
+                    <el-col :span="8">
+                        <el-form-item label="衣服类型">
+                            <el-cascader
+                                    :props="{ checkStrictly: true }"
+                                    v-model="form.place"
+                                    :options="clothesOptions"
+                                    clearable
+                                    placeholder="请选择衣服种类"
+                                    filterable
+                                    :show-all-levels="false"></el-cascader>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-form-item label="衣服数量">
+                            <el-input clearable v-model="form.num" placeholder="请输入数量"></el-input>
+
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <#--动态排-->
+                <el-row v-for="(item, index) in form.dynamicItem" :key="index">
+                    <el-col :span="8">
+                        <el-form-item label="衣服类型">
+                            <el-cascader
+                                    :props="{ checkStrictly: true }"
+                                    v-model="item.place"
+                                    :options="clothesOptions"
+                                    clearable
+                                    placeholder="请选择衣服种类"
+                                    filterable
+                                    :show-all-levels="false"></el-cascader>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-form-item label="衣服数量">
+                            <el-input clearable v-model="item.num" placeholder="请输入数量"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-form-item>
+                            <i style="cursor: pointer" class="el-icon-delete" @click="deleteItem(item, index)"></i>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <#--第四排-->
+                <el-row>
+                    <el-col :span="8">
+                        <el-form-item>
+                            <el-button @click="addItem" size="mini" type="primary" round>添加衣服</el-button>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <#--最后一排-->
+                <el-row>
+                    <el-col :span="8">
+                        <el-form-item>
+                            <el-button type="success" @click="onSubmit" round>立即创建</el-button>
+                            <el-button>取消</el-button>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
                 </el-form>
         </div>
     </div>
@@ -98,72 +146,76 @@
         el: '#app',
         data: function() {
             return {
-                optionsChild:[],
-                detailedCity:false,
-                disabled:true,
+                clothesOptions:[],
+                optionsKey:1,
                 options:[],
                 actOptions:[],
                 form: {
+                    dynamicItem:[],
                     placeChild:[],
                     place:[],
                     name: '',
                     region: '',
-                    date1: '',
-                    date2: '',
+                    date: '',
                     delivery: false,
-                    type: [],
-                    resource: '',
-                    desc: ''
+                    num:''
                 }
             }
         },
         methods:{
-            option(cityId,type){
+
+
+            /*动态删除衣服*/
+            deleteItem (item, index) {
+                this.form.dynamicItem.splice(index, 1)
+            },
+            /*动态增加衣服*/
+            addItem(){
+                this.form.dynamicItem.push({
+                    place: '',
+                    num: ''
+                })
+            },
+            /*活动清除事件*/
+            setValueNull(){
                 var _self = this;
+                /*如果不选活动  cityId=null  选择全国城市*/
+                _self.options=[];
+                ++_self.optionsKey;
+                $.ajax({
+                    url: "/main/city",
+                    type:'get',
+                    dataType: "json",
+                    success:function (resp){
+                        _self.options = _self.getTreeData(resp);
 
-
-
+                    }
+                })
+            },
+            option(cityId,cloId){
+                var _self = this;
+                /*cityId!=null 选择活动所在的城市*/
+                _self.options=[];
+                ++_self.optionsKey;
                 $.ajax({
                     type:'get',
                     dataType: "json",
-                    url:'/main/system/getOneCity?cityId='+cityId,
+                    url:'/washclothes/getChildCity?cityId='+cityId,
                     success:function (resp){
-                        if (resp.grandpaId!=null){
-                            _self.form.place=[resp.grandpaId,resp.parentId,resp.childId]
-                        }else if (resp.parentId!=null){
-                            _self.form.place=[resp.parentId,resp.childId]
-                        }else if (resp.childId!=null){
-                            _self.form.place=[resp.childId]
-                        }
+                        _self.options = _self.getTreeData(resp);
                     }
                 })
 
-                /*如果存在子节点*/
-                if (type!=3){
-                    _self.detailedCity = true;
-                    $.ajax({
-                        type:'get',
-                        dataType: "json",
-                        url:'/washclothes/getChildCity?cityId='+cityId,
-                        success:function (resp){
-                            _self.optionsChild = _self.getTreeData(resp);
-                        }
-                    })
-                }else {
-                    _self.detailedCity = false;
-                }
-            },
-            /*查询所有城市*/
-            getAllCity(){
-              var _self = this;
-              $.ajax({
-                  type:'get',
-                  dataType: "json",
-                  url:'/washclothes/getAllCity',
-                  success:function (resp){
-                      _self.options =_self.getTreeData(resp);
-                  }
-              })
+                /*衣服的详细分类*/
+                $.ajax({
+                    type:'get',
+                    dataType: "json",
+                    url:'/washclothes/findAllClothesType?cloId='+cloId,
+                    success:function (resp){
+                        _self.clothesOptions = _self.getTreeData(resp);
+                    }
+                })
+
             },
             // 递归方法  去除chilren的空数组
             getTreeData(data){
@@ -194,12 +246,13 @@
                 })
             },
             onSubmit() {
-                console.log('submit!');
+                var _self = this;
+                console.log(_self.form)
             }
         },
         created(){
             this.selectAct();
-            this.getAllCity();
+            this.setValueNull();
 
         }
     })

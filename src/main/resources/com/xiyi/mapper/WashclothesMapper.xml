@@ -22,6 +22,19 @@
         <result property="pId" column="pid"/>
         <result property="cityName" column="cityname"/>
     </resultMap>
+    
+    
+    <resultMap id="clothesType" type="com.xiyi.domain.ClothesType">
+        <id property="cltId" column="clt_id"/>
+        <result property="cltName" column="clt_name"/>
+<!--        <association property="clothes" javaType="Clothes">-->
+<!--            <id property="cloId" column="clo_id"/>-->
+<!--            <result property="cloName" column="clo_name"/>-->
+<!--            <result property="cloPrice" column="clo_price"/>-->
+<!--            <result property="cloTypeId" column="clo_typeid"/>-->
+<!--        </association>-->
+        <collection property="clothes" ofType="Clothes" column="clo_typeid" select="findClothes"/>
+    </resultMap>
 
     <select id="getActivity" resultMap="activity">
         select
@@ -32,6 +45,15 @@
             a.act_place = c.id
     </select>
 
+    <!--父元素-->
+    <select id="findAllClothesType" resultMap="clothesType">
+        select * from clothes_type
+    </select>
+
+    <!--子元素-->
+    <select id="findClothes" resultMap="clothesType">
+        select * from clothes
+    </select>
 
 
 </mapper>

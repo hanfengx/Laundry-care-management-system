@@ -2,6 +2,7 @@ package com.xiyi.service;
 
 import com.xiyi.domain.Activity;
 import com.xiyi.domain.City;
+import com.xiyi.domain.ClothesType;
 import com.xiyi.mapper.MainActivityMapper;
 import com.xiyi.mapper.WashclothesMapper;
 import com.xiyi.service.Impservice.WashclothesServiceImp;
@@ -41,6 +42,11 @@ public class WashclothesService implements WashclothesServiceImp {
             }
         }
         return menuList;
+    }
+
+    @Override
+    public List<ClothesType> findAllClothesType(String cloId) {
+        return washclothesMapper.findAllClothesType(cloId);
     }
 
     /**

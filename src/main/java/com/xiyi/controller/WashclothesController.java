@@ -2,6 +2,7 @@ package com.xiyi.controller;
 
 import com.xiyi.domain.Activity;
 import com.xiyi.domain.City;
+import com.xiyi.domain.ClothesType;
 import com.xiyi.service.Impservice.MainActivityServiceImp;
 import com.xiyi.service.Impservice.WashclothesServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +31,6 @@ public class WashclothesController {
         return washclothesServiceImp.getActivity();
     }
 
-    /*获取所有城市*/
-    @GetMapping("getAllCity")
-    public List<Map<String, Object>> getAllCity(){
-
-        return mainActivityServiceImp.getCity();
-    }
-
     /*回显子节点城市*/
     @GetMapping("getChildCity")
     public List<Map<String, Object>> getChildCity(@RequestParam("cityId") String cityId){
@@ -44,4 +38,11 @@ public class WashclothesController {
         return washclothesServiceImp.getChildCity(cityId);
     }
 
+    /*根据活动的大类型 回显衣服类型和价格*/
+    @GetMapping("findAllClothesType")
+    public List<ClothesType> findAllClothesType(@RequestParam("cloId") String cloId){
+
+        return washclothesServiceImp.findAllClothesType(cloId);
+
+    }
 }

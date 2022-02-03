@@ -9,4 +9,6 @@ public class ClothesType {
 
     private String cltName;
 
+    private Clothes clothes;
+
 }
