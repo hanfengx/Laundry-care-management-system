@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <#include "__ref_common_js.ftl" parse=true />
     <!-- import Vue before Element -->
-    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <!-- import JavaScript -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <!-- import CSS -->

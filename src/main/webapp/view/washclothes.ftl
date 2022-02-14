@@ -5,7 +5,7 @@
     <!-- import CSS -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <!-- import Vue before Element -->
-    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <!-- import JavaScript -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <meta charset="UTF-8">
@@ -79,9 +79,9 @@
                     <el-col :span="8">
                         <el-form-item label="衣服类型">
                             <el-cascader
-                                    :props="{ checkStrictly: true }"
-                                    v-model="form.place"
+                                    v-model="form.clothesType"
                                     :options="clothesOptions"
+                                    :key="optionsKey"
                                     clearable
                                     placeholder="请选择衣服种类"
                                     filterable
@@ -100,9 +100,9 @@
                     <el-col :span="8">
                         <el-form-item label="衣服类型">
                             <el-cascader
-                                    :props="{ checkStrictly: true }"
-                                    v-model="item.place"
+                                    v-model="item.value"
                                     :options="clothesOptions"
+                                    :key="optionsKey"
                                     clearable
                                     placeholder="请选择衣服种类"
                                     filterable
@@ -191,6 +191,15 @@
 
                     }
                 })
+
+                $.ajax({
+                    type:'get',
+                    dataType: "json",
+                    url:'/washclothes/findAllClothesType',
+                    success:function (resp){
+                        _self.clothesOptions = _self.getTreeData(resp);
+                    }
+                })
             },
             option(cityId,cloId){
                 var _self = this;
@@ -210,7 +219,7 @@
                 $.ajax({
                     type:'get',
                     dataType: "json",
-                    url:'/washclothes/findAllClothesType?cloId='+cloId,
+                    url:'/washclothes/findActivityClothesType?cloId='+cloId,
                     success:function (resp){
                         _self.clothesOptions = _self.getTreeData(resp);
                     }
@@ -221,13 +230,14 @@
             getTreeData(data){
                 // 循环遍历json数据
                 for(var i=0;i<data.length;i++){
-
-                    if(data[i].children.length<1){
-                        // children若为空数组，则将children设为undefined
-                        data[i].children=undefined;
-                    }else {
-                        // children若不为空数组，则继续 递归调用 本方法
-                        this.getTreeData(data[i].children);
+                    if (data[i].children){
+                        if(data[i].children.length<1){
+                            // children若为空数组，则将children设为undefined
+                            data[i].children=undefined;
+                        }else {
+                            // children若不为空数组，则继续 递归调用 本方法
+                            this.getTreeData(data[i].children);
+                        }
                     }
                 }
                 return data;
@@ -245,6 +255,7 @@
 
                 })
             },
+            //提交订单
             onSubmit() {
                 var _self = this;
                 console.log(_self.form)

@@ -39,10 +39,19 @@ public class WashclothesController {
     }
 
     /*根据活动的大类型 回显衣服类型和价格*/
-    @GetMapping("findAllClothesType")
-    public List<ClothesType> findAllClothesType(@RequestParam("cloId") String cloId){
+    @GetMapping("findActivityClothesType")
+    public List<ClothesType> findActivityClothesType(@RequestParam("cloId") String cloId){
 
-        return washclothesServiceImp.findAllClothesType(cloId);
+        return washclothesServiceImp.findActivityClothesType(cloId);
 
     }
+
+    /*不选择活动 回显衣服类型和价格*/
+    @GetMapping("findAllClothesType")
+    public List<ClothesType> findAllClothesType(){
+
+        return washclothesServiceImp.findAllClothesType();
+
+    }
+
 }

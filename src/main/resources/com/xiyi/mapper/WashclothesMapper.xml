@@ -8,6 +8,7 @@
         <result property="actDiscount" column="act_discount"/>
         <result property="actPlace" column="act_place"/>
         <result property="cyType" column="cy_type"/>
+        <result property="actScope" column="act_scope"/>
     </resultMap>
 
     <resultMap id="city" type="com.xiyi.domain.City">
@@ -26,14 +27,21 @@
     
     <resultMap id="clothesType" type="com.xiyi.domain.ClothesType">
         <id property="cltId" column="clt_id"/>
+        <id property="value" column="clt_id"/>
         <result property="cltName" column="clt_name"/>
+        <result property="label" column="clt_name"/>
 <!--        <association property="clothes" javaType="Clothes">-->
 <!--            <id property="cloId" column="clo_id"/>-->
 <!--            <result property="cloName" column="clo_name"/>-->
 <!--            <result property="cloPrice" column="clo_price"/>-->
 <!--            <result property="cloTypeId" column="clo_typeid"/>-->
 <!--        </association>-->
-        <collection property="clothes" ofType="Clothes" column="clo_typeid" select="findClothes"/>
+        <collection property="children" javaType="java.util.ArrayList" ofType="Clothes">
+            <result property="value" column="clo_id"/>
+            <result property="parentId" column="clo_typeid"/>
+            <result property="label" column="clo_name"/>
+            <result property="cloPrice" column="clo_price"/>
+        </collection>
     </resultMap>
 
     <select id="getActivity" resultMap="activity">
@@ -46,13 +54,25 @@
     </select>
 
     <!--父元素-->
-    <select id="findAllClothesType" resultMap="clothesType">
-        select * from clothes_type
+    <select id="findActivityClothesType" resultMap="clothesType">
+        select
+            *
+        from
+            clothes_type ct
+                left join clothes c on
+                ct.clt_id = c.clo_typeid
+        <where>
+            ct.clt_id = #{cloId}
+        </where>
     </select>
 
-    <!--子元素-->
-    <select id="findClothes" resultMap="clothesType">
-        select * from clothes
+    <select id="findAllClothesType" resultMap="clothesType">
+        select
+            *
+        from
+            clothes_type ct
+                left join clothes c on
+                ct.clt_id = c.clo_typeid
     </select>
 
 

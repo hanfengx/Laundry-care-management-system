@@ -45,8 +45,14 @@ public class WashclothesService implements WashclothesServiceImp {
     }
 
     @Override
-    public List<ClothesType> findAllClothesType(String cloId) {
-        return washclothesMapper.findAllClothesType(cloId);
+    public List<ClothesType> findActivityClothesType(String cloId) {
+        return washclothesMapper.findActivityClothesType(cloId);
+    }
+
+    @Override
+    public List<ClothesType> findAllClothesType() {
+
+        return washclothesMapper.findAllClothesType();
     }
 
     /**

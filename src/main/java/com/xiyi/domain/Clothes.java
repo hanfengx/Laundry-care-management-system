@@ -5,11 +5,11 @@ import lombok.Data;
 @Data
 public class Clothes {
 
-    private Integer cloId;
+    private Integer value;
 
-    private Integer cloTypeId;
+    private Integer parentId;
 
-    private String cloName;
+    private String label;
 
     private String cloPrice;
 

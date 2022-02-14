@@ -17,7 +17,9 @@ public interface WashclothesMapper{
 
     public List<Activity> getActivity();
 
-    public List<ClothesType> findAllClothesType(@Param("cloId") String cloId);
+    public List<ClothesType> findAllClothesType();
+
+    public List<ClothesType> findActivityClothesType(@Param("cloId") String cloId);
 
 
 }

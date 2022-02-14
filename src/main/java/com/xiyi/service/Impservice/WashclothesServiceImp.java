@@ -13,6 +13,8 @@ public interface WashclothesServiceImp {
 
     public List<Map<String, Object>> getChildCity(String cityId);
 
-    public List<ClothesType> findAllClothesType(String cloId);
+    public List<ClothesType> findActivityClothesType(String cloId);
+
+    public List<ClothesType> findAllClothesType();
 
 }
