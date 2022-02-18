@@ -24,6 +24,8 @@ public class InsertOrder {
 
     private String loNote;
 
+    private String loDelivery;
+
 
 
 }

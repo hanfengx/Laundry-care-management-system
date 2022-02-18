@@ -15,12 +15,13 @@
     .el-form{
         margin-left: 120px;
     }
+
 </style>
 <body>
-    <div id="app" >
-        <div style="background-color: white;height: 520px;width: 1450px">
+    <div id="app" v-loading="loading" >
+        <div style="background-color: white;width: 1450px">
             <div style="height: 10px"></div>
-            <el-form ref="form" label-width="100px" :model="form" >
+            <el-form  :rules="rules" ref="form" label-width="100px" :model="form" >
                 <el-row>
                     <el-col :span="8">
                         <el-form-item prop="actId"  label="活动名称">
@@ -77,6 +78,20 @@
                 <#--第三排-->
                 <el-row>
                     <el-col :span="8">
+                        <el-form-item prop="address" label="详细地址">
+                            <el-input
+                                    type="textarea"
+                                    resize="none"
+                                    autosize
+                                    placeholder="请输入详细地址"
+                                    v-model="form.address">
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <#--第四排-->
+                <el-row>
+                    <el-col :span="8">
                         <el-form-item prop="clothesType" label="衣服类型">
                             <el-cascader
                                     v-model="form.clothesType"
@@ -95,6 +110,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
+
                 <#--动态排-->
                 <el-row v-for="(item, index) in form.dynamicItem" :key="index">
                     <el-col :span="8">
@@ -120,7 +136,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <#--第四排-->
+                <#--第五排-->
                 <el-row>
                     <el-col :span="8">
                         <el-form-item>
@@ -132,7 +148,7 @@
                 <el-row>
                     <el-col :span="8">
                         <el-form-item>
-                            <el-button type="success" @click="onSubmit" round>创建订单</el-button>
+                            <el-button type="success" @click="onSubmit('form')" round>创建订单</el-button>
                             <el-button type="primary" @click="formReset('form')" round >重置</el-button>
                         </el-form-item>
                     </el-col>
@@ -147,21 +163,46 @@
         el: '#app',
         data: function() {
             return {
+                loading:true,
                 clothesOptions:[],
                 optionsKey:1,
                 options:[],
                 actOptions:[],
                 form: {
+                    address:'',
                     userName:userName,
                     dynamicItem:[],
                     place:[],
                     date: '',
                     delivery: false,
                     num:''
+                },
+                rules:{
+                    place: [
+                        {required: true, message: '请选择活动地点', trigger: 'blur'}
+                    ],
+                    date:[
+                        {required: true, message: '请选择配送时间', trigger: 'blur'}
+                    ],
+                    clothesType:[
+                        {required: true, message: '请选择衣服类型', trigger: 'blur'}
+                    ],
+                    num:[
+                        {required: true, message: '请输入数量', trigger: 'blur'}
+                    ],
+                    address:[
+                        {required: true, message: '请输入详细地址', trigger: 'blur'}
+                    ]
+
                 }
             }
         },
         methods:{
+            loadings(){
+                setTimeout(() => {
+                    this.loading = false;
+                }, 1000);
+            },
             /*表单重置*/
             formReset(formName){
                 this.$refs[formName].resetFields();
@@ -257,26 +298,47 @@
                 })
             },
             //提交订单
-            onSubmit() {
+            onSubmit(formName) {
                 var _self = this;
-                var form = _self.form
-                console.log(form);
-                $.ajax({
-                    url: '/washclothes/newOrders',
-                    data:JSON.stringify(form),
-                    type: 'post',
-                    contentType: "application/json;charset=UTF-8",
-                    dataType: "json",
-                    success: function (resp) {
+                var form = _self.form;
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        $.ajax({
+                            url: '/washclothes/newOrders',
+                            data:JSON.stringify(form),
+                            type: 'post',
+                            contentType: "application/json;charset=UTF-8",
+                            dataType: "json",
+                            success: function (resp) {
+                                if (resp>0){
+                                    _self.$message({
+                                        message: '创建成功请转到订单管理支付！',
+                                        type: 'success'
+                                    });
+                                }else {
+                                    _self.$message({
+                                        message: '出错了！请联系管理员！',
+                                        type: 'warning'
+                                    });
+                                }
+                            }
 
+                        })
+                    } else {
+                        _self.$message({
+                            message: '订单不完整，请填写完整！',
+                            type: 'warning'
+                        });
+                        return false;
                     }
+                });
 
-                })
             }
         },
         created(){
             this.selectAct();
             this.setValueNull();
+            this.loadings();
 
         }
     })

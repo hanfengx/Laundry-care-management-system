@@ -102,6 +102,7 @@ public class WashclothesService implements WashclothesServiceImp {
         order.setFianlMoney(fianlMoney);
         order.setLoState("0");
         order.setLoNote(oder.getNote());
+        order.setLoDelivery(oder.getDelivery());
         /*存入订单表*/
         Integer num = washclothesMapper.addOder(order);
 
