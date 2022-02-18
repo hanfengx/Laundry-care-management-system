@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xiyi.mapper.WashclothesMapper">
+<mapper namespace="com.xiyi.mapper.WashclothesMappers">
 
     <resultMap id="activity" type="com.xiyi.domain.Activity">
         <result property="actId" column="act_id"/>
@@ -22,6 +22,10 @@
         <result property="id" column="id"/>
         <result property="pId" column="pid"/>
         <result property="cityName" column="cityname"/>
+    </resultMap>
+
+    <resultMap id="clothes" type="com.xiyi.domain.Clothes">
+        <result property="cloPrice" column="clo_price"/>
     </resultMap>
     
     
@@ -74,6 +78,55 @@
                 left join clothes c on
                 ct.clt_id = c.clo_typeid
     </select>
+
+    <select id="clothesPrice" resultMap="clothes" >
+        select c.clo_price from clothes c where c.clo_id = #{clothes};
+    </select>
+
+
+    <insert id="addOder" parameterType="com.xiyi.domain.InsertOrder">
+        <selectKey keyProperty="loId" resultType="java.lang.Integer" order="AFTER" >
+            select last_insert_id();
+        </selectKey>
+
+        insert into laundry_orders
+        <trim prefix="(" suffix=")" prefixOverrides=",">
+            <if test="loUserId!=null">lo_user_id,</if>
+            <if test="loDate!=null">lo_date,</if>
+            <if test="loActId!=null">lo_act_id,</if>
+            <if test="loCityId!=null">lo_city_id,</if>
+            <if test="loAddress!=null">lo_address,</if>
+            <if test="fianlMoney!=null">lo_order_amount,</if>
+            <if test="loState!=null">lo_state</if>
+            <if test="loNote!=null">lo_note</if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="loUserId!=null">#{loUserId},</if>
+            <if test="loDate!=null">#{loDate},</if>
+            <if test="loActId!=null">#{loActId},</if>
+            <if test="loCityId!=null">#{loCityId},</if>
+            <if test="loAddress!=null">#{loAddress},</if>
+            <if test="fianlMoney!=null">#{fianlMoney},</if>
+            <if test="loState!=null">#{loState}</if>
+            <if test="loNote!=null">#{loNote}</if>
+        </trim>
+
+    </insert>
+    <insert id="AddOrdersGoods">
+        insert into orders_goods
+        <trim prefix="(" suffix=")" prefixOverrides=",">
+            <if test="ogLoId!=null">og_lo_id,</if>
+            <if test="ogName!=null">og_name,</if>
+            <if test="ogNum!=null">og_num,</if>
+            <if test="ogPrice!=null">og_price</if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="ogLoId!=null">#{ogLoId},</if>
+            <if test="ogName!=null">#{ogName},</if>
+            <if test="ogNum!=null">#{ogNum},</if>
+            <if test="ogPrice!=null">#{ogPrice}</if>
+        </trim>
+    </insert>
 
 
 </mapper>

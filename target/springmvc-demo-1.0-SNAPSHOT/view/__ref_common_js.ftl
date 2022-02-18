@@ -1,10 +1,10 @@
 <script src="/js/polyfill.min.js" type="text/javascript"></script>
-<script src="/js/jquery.min.js" type="text/javascript" ></script>
 <script src="/js/aes.js" type="text/javascript"></script>
 <script src="/js/underscore-min.js" type="text/javascript" ></script>
 <script src="/js/moment.min.js" type="text/javascript" ></script>
-
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 <script src="/js/axios.min.js" type="text/javascript"></script>
+<script src="/css/vue.js" type="text/javascript" charset="UTF-8"></script>
 <script src="/js/vue.min.js" type="text/javascript"></script>
 <script src="/js/axios.default.js" type="text/javascript"></script>
 

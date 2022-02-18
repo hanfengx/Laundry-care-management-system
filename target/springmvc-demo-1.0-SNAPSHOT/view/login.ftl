@@ -2,17 +2,13 @@
 <html>
 <head>
     <title>洗衣平台</title>
-    <!-- import Vue before Element &ndash;&gt;-->
-    <script src="https://unpkg.com/vue/dist/vue.js"></script>
-    <!-- import JavaScript &ndash;&gt;-->
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-    <!-- import CSS &ndash;&gt;-->
+    <#include "__ref_common_js.ftl" parse=true />
+    <!-- import CSS -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-
-    <#--<script  src="webjars/jquery/3.5.1/jquery.min.js"> </script>-->
-
-    <#--<%--引入jquery的在线包--%>-->
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!-- import Vue before Element -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <meta charset="UTF-8">
 </head>
 <STYLE>

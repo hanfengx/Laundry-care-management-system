@@ -3,6 +3,8 @@ package com.xiyi.service.Impservice;
 import com.xiyi.domain.Activity;
 import com.xiyi.domain.City;
 import com.xiyi.domain.ClothesType;
+;
+import com.xiyi.domain.Order;
 
 import java.util.List;
 import java.util.Map;
@@ -16,5 +18,7 @@ public interface WashclothesServiceImp {
     public List<ClothesType> findActivityClothesType(String cloId);
 
     public List<ClothesType> findAllClothesType();
+
+    public Integer newOrders(Order oder);
 
 }

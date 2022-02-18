@@ -9,7 +9,7 @@
     <!-- import JavaScript -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <meta charset="UTF-8">
-    <title></title>
+    <title>订单页面</title>
 </head>
 <style>
     .el-form{
@@ -23,10 +23,10 @@
             <el-form ref="form" label-width="100px" :model="form" >
                 <el-row>
                     <el-col :span="8">
-                        <el-form-item  label="活动名称">
+                        <el-form-item prop="actId"  label="活动名称">
                             <el-select
                                     @clear="setValueNull()"
-                                    v-model="actOptions.actId"
+                                    v-model="form.actId"
                                     clearable
                                     filterable>
                                 <el-option
@@ -39,7 +39,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                        <el-form-item label="活动地点">
+                        <el-form-item prop="place" label="活动地点">
                             <el-cascader
                                     :props="{ checkStrictly: true }"
                                     v-model="form.place"
@@ -55,7 +55,7 @@
                 <#--第二排-->
                 <el-row>
                     <el-col :span="8">
-                        <el-form-item label="配送时间">
+                        <el-form-item prop="date" label="配送时间">
                             <el-col :span="9">
                                 <el-date-picker
                                         type="date"
@@ -68,7 +68,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                        <el-form-item label="即时配送">
+                        <el-form-item prop="delivery"  label="即时配送">
                             <el-switch v-model="form.delivery"></el-switch>
                         </el-form-item>
                     </el-col>
@@ -77,7 +77,7 @@
                 <#--第三排-->
                 <el-row>
                     <el-col :span="8">
-                        <el-form-item label="衣服类型">
+                        <el-form-item prop="clothesType" label="衣服类型">
                             <el-cascader
                                     v-model="form.clothesType"
                                     :options="clothesOptions"
@@ -89,7 +89,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="4">
-                        <el-form-item label="衣服数量">
+                        <el-form-item prop="num" label="衣服数量">
                             <el-input clearable v-model="form.num" placeholder="请输入数量"></el-input>
 
                         </el-form-item>
@@ -98,9 +98,9 @@
                 <#--动态排-->
                 <el-row v-for="(item, index) in form.dynamicItem" :key="index">
                     <el-col :span="8">
-                        <el-form-item label="衣服类型">
+                        <el-form-item prop="clothesType"  label="衣服类型">
                             <el-cascader
-                                    v-model="item.value"
+                                    v-model="item.clothesType"
                                     :options="clothesOptions"
                                     :key="optionsKey"
                                     clearable
@@ -110,7 +110,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="4">
-                        <el-form-item label="衣服数量">
+                        <el-form-item prop="num" label="衣服数量">
                             <el-input clearable v-model="item.num" placeholder="请输入数量"></el-input>
                         </el-form-item>
                     </el-col>
@@ -132,8 +132,8 @@
                 <el-row>
                     <el-col :span="8">
                         <el-form-item>
-                            <el-button type="success" @click="onSubmit" round>立即创建</el-button>
-                            <el-button>取消</el-button>
+                            <el-button type="success" @click="onSubmit" round>创建订单</el-button>
+                            <el-button type="primary" @click="formReset('form')" round >重置</el-button>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -142,6 +142,7 @@
     </div>
 </body>
 <script>
+    var userName = '${userName}';
     var vm = new Vue({
         el: '#app',
         data: function() {
@@ -151,11 +152,9 @@
                 options:[],
                 actOptions:[],
                 form: {
+                    userName:userName,
                     dynamicItem:[],
-                    placeChild:[],
                     place:[],
-                    name: '',
-                    region: '',
                     date: '',
                     delivery: false,
                     num:''
@@ -163,8 +162,10 @@
             }
         },
         methods:{
-
-
+            /*表单重置*/
+            formReset(formName){
+                this.$refs[formName].resetFields();
+            },
             /*动态删除衣服*/
             deleteItem (item, index) {
                 this.form.dynamicItem.splice(index, 1)
@@ -172,7 +173,7 @@
             /*动态增加衣服*/
             addItem(){
                 this.form.dynamicItem.push({
-                    place: '',
+                    clothesType: '',
                     num: ''
                 })
             },
@@ -258,7 +259,19 @@
             //提交订单
             onSubmit() {
                 var _self = this;
-                console.log(_self.form)
+                var form = _self.form
+                console.log(form);
+                $.ajax({
+                    url: '/washclothes/newOrders',
+                    data:JSON.stringify(form),
+                    type: 'post',
+                    contentType: "application/json;charset=UTF-8",
+                    dataType: "json",
+                    success: function (resp) {
+
+                    }
+
+                })
             }
         },
         created(){

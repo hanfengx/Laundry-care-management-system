@@ -14,4 +14,5 @@ public class Clothes {
     private String cloPrice;
 
 
+
 }

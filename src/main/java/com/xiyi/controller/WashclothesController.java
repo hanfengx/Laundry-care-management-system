@@ -3,18 +3,19 @@ package com.xiyi.controller;
 import com.xiyi.domain.Activity;
 import com.xiyi.domain.City;
 import com.xiyi.domain.ClothesType;
+import com.xiyi.domain.Order;
 import com.xiyi.service.Impservice.MainActivityServiceImp;
 import com.xiyi.service.Impservice.WashclothesServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
-
+/*
+* @date:2022/2/16
+* @name:hanfx
+* */
 @RestController
 @RequestMapping("/washclothes/")
 public class WashclothesController {
@@ -53,5 +54,16 @@ public class WashclothesController {
         return washclothesServiceImp.findAllClothesType();
 
     }
+
+    /*
+    * 新增订单
+    * */
+    @PostMapping("newOrders")
+    @ResponseBody
+    public Integer newOrders(@RequestBody Order oder){
+
+        return washclothesServiceImp.newOrders(oder);
+    }
+
 
 }
