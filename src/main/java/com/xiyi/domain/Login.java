@@ -18,4 +18,6 @@ public class Login {
 
     private String userPermissions;
 
+    private String userAmount;
+
 }

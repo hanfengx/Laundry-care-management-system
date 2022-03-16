@@ -27,4 +27,7 @@
             <if test="userPermissions!=null">#{userPermissions}</if>
         </trim>
     </insert>
+    <insert id="registrationVip">
+        insert into member_stored_value (msv_user_id) values (#{userName})
+    </insert>
 </mapper>

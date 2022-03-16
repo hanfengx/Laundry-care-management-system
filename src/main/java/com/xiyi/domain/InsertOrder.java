@@ -3,6 +3,8 @@ package com.xiyi.domain;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class InsertOrder {
 
@@ -16,15 +18,29 @@ public class InsertOrder {
 
     private String loCityId;
 
+    //回显城市名字
+    private String cityName;
+
+    //活动城市
+    private String actCityId;
+
     private String loAddress;
 
-    private Integer fianlMoney;
+    private Integer loOrderAmount;
+
+    private Double fianlMoney;
 
     private String loState;
 
     private String loNote;
 
     private String loDelivery;
+
+    private Activity activity;
+
+    private List<ordersGoods> ordersGoods;
+
+
 
 
 

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 </head>
 <body>
-<div id="app"  >
+<div id="app" style="display: none" >
     <div>
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
             <el-form-item>
@@ -432,6 +432,7 @@
 
             },
             loadings(){
+                $('#app').css('display','block');
                 setTimeout(() => {
                     this.loading = false;
                 }, 1000);

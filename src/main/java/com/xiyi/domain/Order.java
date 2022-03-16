@@ -30,6 +30,8 @@ public class Order {
 
     private String note;
 
+    private Integer actDiscount;
+
 
 
 }

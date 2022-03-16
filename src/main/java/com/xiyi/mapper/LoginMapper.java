@@ -11,4 +11,5 @@ public interface LoginMapper {
 
     public Integer registration(@Param("userName") String userName,@Param("userPwd") String userPwd,@Param("userPermissions") String userPermissions);
 
+    public Integer registrationVip(@Param("userName") String userName);
 }

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiyi.mapper.OrderManagementMapper">
+
+    <resultMap id="order" type="com.xiyi.domain.InsertOrder">
+        <result property="loId" column="lo_id"/>
+        <result property="loUserId" column="lo_user_id"/>
+        <result property="loDate" column="lo_date"/>
+        <result property="loActId" column="lo_act_id"/>
+        <result property="loCityId" column="lo_city_id"/>
+        <result property="loAddress" column="lo_address"/>
+        <result property="loOrderAmount" column="lo_order_amount"/>
+        <result property="loState" column="lo_state"/>
+        <result property="loNote" column="lo_note"/>
+        <result property="loDelivery" column="lo_delivery"/>
+        <result property="actCityId" column="act_place"/>
+        <association property="activity" javaType="Activity">
+            <result property="actId" column="act_id"/>
+            <result property="actName" column="act_name"/>
+            <result property="actDiscount" column="act_discount"/>
+        </association>
+        <collection property="ordersGoods" ofType="ordersGoods">
+            <result property="ogId" column="og_id"/>
+            <result property="ogLoId" column="og_lo_id"/>
+            <result property="ogName" column="og_name"/>
+            <result property="ogNum" column="og_num"/>
+            <result property="ogPrice" column="og_price"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="login" type="com.xiyi.domain.Login">
+        <result property="userAmount" column="user_amount"/>
+    </resultMap>
+    <delete id="deleteOrder">
+        delete from laundry_orders where lo_id = #{loId}
+    </delete>
+    <delete id="deleteGoods">
+        delete from orders_goods where og_lo_id = #{loId}
+    </delete>
+
+    <select id="getCity" resultType="java.lang.String">
+        select c.cityname from city c where c.id = #{cityId};
+    </select>
+    <select id="getGoods" resultType="java.lang.String">
+        select c.clo_name from clothes c where c.clo_id = #{goodsId}
+    </select>
+
+    <select id="getOrder" resultMap="order">
+        select
+            lo.lo_id,
+            lo.lo_user_id,
+            lo.lo_date,
+            lo.lo_act_id,
+            lo.lo_city_id,
+            lo.lo_address,
+            lo.lo_order_amount,
+            lo.lo_state,
+            lo.lo_note,
+            lo.lo_delivery,
+            ds.og_id ,
+            ds.og_name,
+            ds.og_num ,
+            ds.og_lo_id,
+            ds.og_price,
+            a.act_name,
+            a.act_discount,
+            a.act_id,
+            a.act_place
+        from
+            laundry_orders lo
+                left join orders_goods ds on
+                lo.lo_id = ds.og_lo_id
+                left join activity a on
+                lo.lo_act_id = a.act_id
+        <where>
+            lo_user_id = #{userId}
+            <if test="activity!=''">and act_name=#{activity}</if>
+            <if test="state!=''">and lo_state=#{state}</if>
+            <if test="date!=''">and lo_date=#{date}</if>
+        </where>
+
+    </select>
+    <select id="balance" resultMap="login">
+        select user_amount  from login where user_name = #{userId};
+    </select>
+
+    <update id="pay">
+        update laundry_orders set lo_state = 1 where lo_id = #{loId}
+    </update>
+
+    <update id="payUser">
+        update login set user_amount = user_amount-#{sum} where user_name = #{userId}
+    </update>
+    <update id="payVip">
+        update member_stored_value set msv_amount = msv_amount+#{sum} where msv_user_id = #{userId}
+    </update>
+
+    <update id="revise">
+        update laundry_orders set lo_city_id = #{cityName} ,lo_address = #{orderPlace} where lo_id = #{loId}
+    </update>
+</mapper>

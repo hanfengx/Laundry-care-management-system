@@ -1,3 +1,8 @@
-# biyesheji
-# biyesheji
-# biyesheji
+# 欢迎来到洗衣毕业设计
+
+## 	1.请不要随意提交代码
+
+## 	2.无私有库  直接maven下载启动
+
+## 	3.ssm项目需要tomcat	
+

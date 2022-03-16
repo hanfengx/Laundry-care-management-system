@@ -60,11 +60,21 @@ public class LaundryRouterController {
     }
 
     @RequestMapping(value="/laundry/washClothes")
-    public ModelAndView washClothes(HttpServletRequest request,Model mm){
+    public ModelAndView washClothes(HttpServletRequest request,Model mm,@RequestParam(value = "actId",required = false,defaultValue = "") String actId){
         HttpSession session = request.getSession(true);
+        mm.addAttribute("actId",actId);
         mm.addAttribute("userName",session.getAttribute("userName"));
         modelAndView.setViewName("washclothes");
         return modelAndView;
     }
+
+    @RequestMapping(value = "/laudry/orderManagement")
+    public ModelAndView orderManagement(HttpServletRequest request,Model mm){
+        HttpSession session = request.getSession(true);
+        mm.addAttribute("userName",session.getAttribute("userName"));
+        modelAndView.setViewName("ordermanagement");
+        return modelAndView;
+    }
+
 
 }

@@ -21,6 +21,8 @@ public class LoginService implements LoginServiceImp {
     @Override
     public Integer registration(String userName, String userPwd, String userPwdAgain, String userPermissions) {
         Integer reg = loginMapper.registration(userName,userPwd,userPermissions);
+        //向会员表注册
+        loginMapper.registrationVip(userName);
         if (userPwd.equals(userPwdAgain)){
             return reg;
         }else {

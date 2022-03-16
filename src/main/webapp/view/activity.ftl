@@ -6,8 +6,19 @@
     <!-- import CSS -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 </head>
+<style>
+    .label{
+        width: 150px;
+    }
+    .activeNames{
+        width: 150px;
+    }
+    .city{
+        width: 250px;
+    }
+</style>
 <body>
-<div id="app"  >
+<div id="app" style="display: none"  >
     <div>
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
             <el-form-item label="活动名称">
@@ -39,60 +50,60 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" round   @click="query()">查询</el-button>
+                <el-button type="primary" round  icon="el-icon-search"   @click="query()">查询</el-button>
             </el-form-item>
         </el-form>
     </div>
     <div v-loading="loading"  >
         <el-descriptions  v-for="item in activity" style="margin-top: 10px"  class="margin-top" :column="4"  border>
-            <el-descriptions-item >
+            <el-descriptions-item content-class-name="activeNames" label-class-name="label" >
                 <template slot="label">
                     <i class="el-icon-tickets"></i>
                     活动名称
                 </template>
                 {{item.actName}}
             </el-descriptions-item>
-            <el-descriptions-item content-class-name="scopes">
+            <el-descriptions-item content-class-name="scopes" label-class-name="label">
                 <template slot="label">
                     <i class="el-icon-scissors"></i>
                     活动范围
                 </template>
                 {{item.clothesType.cltName}}
             </el-descriptions-item>
-            <el-descriptions-item>
+            <el-descriptions-item label-class-name="label">
                 <template slot="label">
                     <i class="el-icon-s-goods"></i>
                     活动折扣
                 </template>
                 {{item.actDiscount/10}}折
             </el-descriptions-item>
-            <el-descriptions-item>
+            <el-descriptions-item label-class-name="label">
                 <template slot="label">
                     <i class="el-icon-notebook-2"></i>
                     活动内容
                 </template>
                 {{item.actContent}}
             </el-descriptions-item>
-            <el-descriptions-item>
+            <el-descriptions-item label-class-name="label">
                 <template slot="label">
                     <i class="el-icon-map-location"></i>
                     活动地点
                 </template>
                 <el-tag>{{item.city.cityName}}</el-tag>
             </el-descriptions-item>
-            <el-descriptions-item content-class-name="time">
+            <el-descriptions-item label-class-name="label" content-class-name="time">
                 <template slot="label">
                     <i class="el-icon-date"></i>
                     活动时间
                 </template>
                 {{item.actCreateDate}}至{{item.actEndDate}}
             </el-descriptions-item>
-            <el-descriptions-item>
+            <el-descriptions-item label-class-name="label">
                 <template slot="label">
                     <i class="el-icon-edit"></i>
                     操作
                 </template>
-                <el-button type="success" round size="small">立即参与</el-button>
+                <el-button type="success" @click="jump(item.actId)" round size="small">立即参与</el-button>
             </el-descriptions-item>
         </el-descriptions>
     </div>
@@ -161,7 +172,11 @@
             }
         },
         methods:{
+            jump(actId){
+              window.location.href="/laundry/washClothes?actId="+actId;
+            },
             loadings(){
+                $('#app').css('display','block');
                 setTimeout(() => {
                     this.loading = false;
                 }, 1000);

@@ -93,7 +93,7 @@
                                 background-color="#545c64"
                                 text-color="#fff"
                                 active-text-color="#ffd04b">
-                            <template v-for="(item, index) in title">
+                            <template v-for="(item, index) in title" >
                                 <el-menu-item :index = "item.url" :key = "index">
                                     {{item.tit}}
                                 </el-menu-item>
@@ -119,7 +119,7 @@
                 </el-header>
                 <el-main>
 
-                    <iframe id="iframe" width="1460px" height="690px"  frameBorder="0" scrolling="false" ></iframe>
+                    <iframe id="iframe" width="1460px" height="750px"  frameBorder="0" scrolling="false" ></iframe>
                 </el-main>
             </el-container>
         </el-container>
@@ -137,7 +137,7 @@
                 title:[
                     {tit: '最新活动',url:'/laundry/activity'},
                     {tit: '我要洗衣',url:'/laundry/washClothes'},
-                    {tit: '订单管理',url:'/3'},
+                    {tit: '订单管理',url:'/laudry/orderManagement'},
                     {tit: '会员中心',url:'/4'},
                     {tit: '常见问题',url:'/5'}
                 ],
@@ -156,8 +156,11 @@
             },
 
             handleSelect(key, keyPath) {
+                console.log(key);
+                console.log(keyPath);
                 var iframe = document.getElementById("iframe")
                 iframe.src=keyPath;
+
             },
 
         },

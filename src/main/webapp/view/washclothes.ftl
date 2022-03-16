@@ -34,7 +34,7 @@
                                         v-for="item in actOptions"
                                         :label="item.actName"
                                         :value="item.actId"
-                                        @click.native='option(item.actPlace,item.actScope)'>
+                                        @click.native='option(item.actPlace,item.actScope,item.actDiscount)'>
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -64,6 +64,7 @@
                                         v-model="form.date"
                                         style="width: 100%;"
                                         format="yyyy 年 MM 月 dd 日"
+                                        :picker-options="pickerOption"
                                         value-format="yyyy-MM-dd"></el-date-picker>
                             </el-col>
                         </el-form-item>
@@ -159,16 +160,24 @@
 </body>
 <script>
     var userName = '${userName}';
+    var actId = '${actId}';
     var vm = new Vue({
         el: '#app',
         data: function() {
             return {
+                pickerOption:{
+                    disabledDate(time){
+                        return  time.getTime() < (Date.now() - (24 * 60 * 60 * 1000))
+                    },
+                },
                 loading:true,
                 clothesOptions:[],
                 optionsKey:1,
                 options:[],
+                actId:actId,
                 actOptions:[],
                 form: {
+                    actDiscount:'',
                     address:'',
                     userName:userName,
                     dynamicItem:[],
@@ -198,6 +207,7 @@
             }
         },
         methods:{
+
             loadings(){
                 setTimeout(() => {
                     this.loading = false;
@@ -243,8 +253,9 @@
                     }
                 })
             },
-            option(cityId,cloId){
+            option(cityId,cloId,actDiscount){
                 var _self = this;
+                _self.form.actDiscount = actDiscount;
                 /*cityId!=null 选择活动所在的城市*/
                 _self.options=[];
                 ++_self.optionsKey;

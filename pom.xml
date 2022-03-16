@@ -15,6 +15,12 @@
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
     <dependencies>
+        <!--支付宝支付插件-->
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-easysdk</artifactId>
+            <version>2.2.1</version>
+        </dependency>
         <!--隐藏url依赖-->
         <dependency>
             <groupId>org.tuckey</groupId>

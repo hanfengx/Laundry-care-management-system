@@ -25,5 +25,5 @@ public interface WashclothesMappers {
     Integer AddOrdersGoods(@Param("ogLoId") Integer loId,
                            @Param("ogName") String clothesType,
                            @Param("ogNum") Integer num,
-                           @Param("ogPrice") Integer finalPrice);
+                           @Param("ogPrice") Object finalPrice);
 }
