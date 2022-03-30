@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiyi.mapper.MemberCentreMapper">
+
+    <resultMap id="gift" type="com.xiyi.domain.MembershipGift">
+        <result property="mgId" column="mg_id"/>
+        <result property="name" column="mg_name"/>
+        <result property="integral" column="mg_integral"/>
+        <result property="image" column="mg_img"/>
+    </resultMap>
+
+    <resultMap id="msv" type="com.xiyi.domain.MemberStoredValue">
+        <result property="msvId" column="msv_id"/>
+        <result property="msvAmount" column="msv_amount"/>
+        <result property="msvUserId" column="msv_user_id"/>
+    </resultMap>
+
+    <resultMap id="giftOrder" type="com.xiyi.domain.GiftOrders">
+        <result property="goRandom" column="go_random"/>
+        <result property="id" column="go_id"/>
+        <result property="goState" column="go_state"/>
+        <association property="membershipGift" javaType="MembershipGift">
+            <result property="name" column="mg_name"/>
+            <result property="integral" column="mg_integral"/>
+        </association>
+    </resultMap>
+
+
+
+    <insert id="insert">
+        insert into membership_gift
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name!=null">mg_name,</if>
+            <if test="integral!=null">mg_integral,</if>
+            <if test="encode!=null">mg_img</if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="name!=null">#{name},</if>
+            <if test="integral!=null">#{integral},</if>
+            <if test="encode!=null">#{encode}</if>
+        </trim>
+    </insert>
+    <insert id="insertGiftOrders">
+        insert into gift_orders
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userName!=null">go_user_id,</if>
+            <if test="random!=null">go_random,</if>
+            <if test="mgId!=null">go_mg_id,</if>
+            go_state
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="userName!=null">#{userName},</if>
+            <if test="random!=null">#{random},</if>
+            <if test="mgId!=null">#{mgId},</if>
+            '0'
+        </trim>
+    </insert>
+
+
+    <select id="queryImage" resultMap="gift">
+        select * from membership_gift where mg_id = #{mgId}
+    </select>
+
+    <select id="query" resultMap="gift">
+        select * from membership_gift
+    </select>
+
+
+    <delete id="deleteGift">
+        DELETE FROM membership_gift
+        WHERE mg_id=#{mgId};
+    </delete>
+
+    <select id="queryIntegral" resultMap="msv" >
+        select * from member_stored_value where msv_user_id = #{userName};
+    </select>
+
+
+    <update id="updateUserIntegral">
+        UPDATE member_stored_value SET msv_amount=#{sum}
+        WHERE msv_user_id=#{userName};
+    </update>
+
+
+    <select id="getGiftOrders" resultMap="giftOrder">
+        select * from gift_orders os left join membership_gift gt on gt.mg_id = os.go_mg_id   where go_user_id = #{userName}
+    </select>
+</mapper>

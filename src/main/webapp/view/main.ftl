@@ -138,7 +138,7 @@
                     {tit: '最新活动',url:'/laundry/activity'},
                     {tit: '我要洗衣',url:'/laundry/washClothes'},
                     {tit: '订单管理',url:'/laudry/orderManagement'},
-                    {tit: '会员中心',url:'/4'},
+                    {tit: '会员中心',url:'/laudry/membercentre'},
                     {tit: '常见问题',url:'/5'}
                 ],
                 name:_name,

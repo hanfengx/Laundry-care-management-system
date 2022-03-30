@@ -12,6 +12,7 @@
     <!--
          SpringMVC只扫描controller包即可
      -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
     <context:component-scan base-package="com.xiyi.controller"/>
     <!-- 解决静态资源访问问题，如果不加mvc:annotation-driven会导致无法访问handler-->
     <mvc:default-servlet-handler/>

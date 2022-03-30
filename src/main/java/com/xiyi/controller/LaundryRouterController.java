@@ -77,4 +77,22 @@ public class LaundryRouterController {
     }
 
 
+    @RequestMapping("/laudry/membercentre")
+    public ModelAndView membercentre(HttpServletRequest request,Model mm){
+        HttpSession session = request.getSession(true);
+        mm.addAttribute("userName",session.getAttribute("userName"));
+        modelAndView.setViewName("user_membercentre");
+        return modelAndView;
+
+
+    }
+
+    @RequestMapping("/laudry/sysmembercentre")
+    public ModelAndView sysMembercentre(HttpServletRequest request,Model mm){
+        HttpSession session = request.getSession(true);
+        mm.addAttribute("userName",session.getAttribute("userName"));
+        modelAndView.setViewName("sys_membercentre");
+        return modelAndView;
+    }
+
 }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <title>洗衣平台管理</title>
+    <title>洗衣平台</title>
     <meta charset="UTF-8">
     <#include "__ref_common_js.ftl" parse=true />
     <!-- import Vue before Element -->
@@ -93,7 +93,7 @@
                                 background-color="#545c64"
                                 text-color="#fff"
                                 active-text-color="#ffd04b">
-                            <template v-for="(item, index) in title">
+                            <template v-for="(item, index) in title" >
                                 <el-menu-item :index = "item.url" :key = "index">
                                     {{item.tit}}
                                 </el-menu-item>
@@ -119,7 +119,7 @@
                 </el-header>
                 <el-main>
 
-                    <iframe id="iframe" width="1460px" height="690px"  frameBorder="0" scrolling="false" ></iframe>
+                    <iframe id="iframe" width="1460px" height="750px"  frameBorder="0" scrolling="false" ></iframe>
                 </el-main>
             </el-container>
         </el-container>
@@ -131,18 +131,19 @@
     var _pass ='${passWord}';
     var vm = new Vue({
         el: '#app',
+        src:'',
         data: function() {
             return {
                 title:[
-                    {tit: '活动',url:'/laundry/systemActivity'},
-                    {tit: '问题',url:'/2'},
+                    {tit: '活动',url:'/laundry/systemActivity?username='+_name},
                     {tit: '订单',url:'/3'},
-                    {tit: '会员',url:'/4'},
+                    {tit: '会员',url:'/laudry/sysmembercentre'},
+                    {tit: '问题',url:'/2'},
                 ],
                 name:_name,
                 pass:_pass,
                 visible: false,
-                activeIndex: '/laundry/systemActivity',
+                activeIndex: '/laundry/systemActivity?username='+name,
 
             }
         },
@@ -156,6 +157,10 @@
             },
 
             handleSelect(key, keyPath) {
+                console.log(key);
+                console.log(keyPath);
+                var iframe = document.getElementById("iframe")
+                iframe.src=keyPath;
 
             },
 

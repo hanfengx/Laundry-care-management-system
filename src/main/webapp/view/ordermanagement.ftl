@@ -23,7 +23,7 @@
     }
 </style>
 <body>
-<div id="app" >
+<div id="app" style="display: none">
     <div>
         <#--搜索框-->
         <el-form label-width="auto" :inline="true" :model="form" class="demo-form-inline">
@@ -385,6 +385,7 @@
               })
             },
             loadings(){
+                $('#app').css('display','block');
                 setTimeout(() => {
                     this.loading = false;
                 }, 1000);
