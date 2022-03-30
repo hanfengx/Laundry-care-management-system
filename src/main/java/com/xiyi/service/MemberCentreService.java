@@ -8,12 +8,6 @@ import com.xiyi.service.Impservice.MemberCentreServiceImp;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Service
@@ -78,6 +72,17 @@ public class MemberCentreService implements MemberCentreServiceImp {
     @Override
     public List<GiftOrders> getGiftOrders(String userName) {
         return memberCentreMapper.getGiftOrders(userName);
+    }
+
+    @Override
+    public List<GiftOrders> queryGift(String goRandom) {
+        return memberCentreMapper.queryGift(goRandom);
+    }
+
+    @Override
+    public Integer cashGift(String id) {
+
+        return memberCentreMapper.cashGift(id);
     }
 
     //生成随机数来用于兑换奖品码

@@ -13,6 +13,8 @@ public class GiftOrders {
 
     private String goRandom;
 
+    private String goUserId;
+
     private String goState;
 
     private MembershipGift membershipGift;

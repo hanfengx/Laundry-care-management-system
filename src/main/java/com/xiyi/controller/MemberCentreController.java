@@ -123,4 +123,19 @@ public class MemberCentreController {
     }
 
 
+    //管理员根据礼品码查询用户的礼品
+    @GetMapping("queryGift")
+    public List<GiftOrders> queryGift(@RequestParam("goRandom") String goRandom){
+
+        return memberCentreServiceImp.queryGift(goRandom);
+    }
+
+    //兑换礼品
+    @GetMapping("cashGift")
+    public Integer cashGift(@RequestParam("id") String id){
+
+        return memberCentreServiceImp.cashGift(id);
+    }
+
+
 }

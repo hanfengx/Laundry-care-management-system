@@ -35,4 +35,8 @@ public interface MemberCentreMapper {
                                     @Param("mgId") String mgId);
 
     public List<GiftOrders> getGiftOrders(@Param("userName") String userName);
+
+    public List<GiftOrders> queryGift(@Param("goRandom") String goRandom);
+
+    public Integer cashGift(@Param("id") String id);
 }

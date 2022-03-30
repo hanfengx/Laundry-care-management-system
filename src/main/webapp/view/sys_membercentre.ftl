@@ -72,12 +72,15 @@
 <div id="app" style="display: none">
     <div>
         <div>
-            <el-row >
-                <el-col :span="22">
-                    <span>您当前的积分为:<span style="color: #67C23A">{{userIntegral||'未知'}}</span></span>
+            <el-row align="middle" type="flex">
+                <el-col :span="20">
+                    <span>您当前的积分为:<span style="color: #67C23A">管理员</span></span>
+                </el-col>
+                <el-col :span="2">
+                    <el-button type="success" @click="giftFormVisible = true" round>添加礼品</el-button>
                 </el-col>
                 <el-col :span="1">
-                    <el-button type="success" @click="giftFormVisible = true" round>添加礼品</el-button>
+                    <el-button type="success" @click="cashGiftVisible = true" round>兑换礼品</el-button>
                 </el-col>
             </el-row>
         </div>
@@ -142,6 +145,37 @@
                 <el-button type="primary" @click="onSubmit(form)">确 定</el-button>
             </div>
         </el-dialog>
+
+        <#--兑换礼品-->
+        <el-dialog title="查询礼品" :visible.sync="cashGiftVisible">
+            <el-form :inline="true" ref="formGift" :model="formGift" label-width="80px">
+                <el-form-item label="兑换码">
+                    <el-input v-model="formGift.goRandom" placeholder="请输入兑换码"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="queryGift(formGift)">查询</el-button>
+                </el-form-item>
+            </el-form>
+            <div v-show="gridDataType=='1'">
+                <el-table :data="gridData">
+                    <el-table-column width="100" align="center" label="序号" >
+                        <template slot-scope="scope">
+                            <span>{{scope.$index+1}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column property="membershipGift.name" label="礼品名称" width="100"></el-table-column>
+                    <el-table-column property="goUserId" label="兑换用户" width="100"></el-table-column>
+                    <el-table-column :formatter="changeState" property="goState" label="兑换状态" width="100"></el-table-column>
+                    <el-table-column  label="操作" width="100">
+                        <template slot-scope="scope">
+                            <el-button :disabled="scope.row.goState=='1'?true:false" @click="handleClick(scope.row)" type="text">兑换</el-button>
+                        </template>
+                    </el-table-column>
+
+                </el-table>
+            </div>
+
+        </el-dialog>
     </div>
 </div>
 </body>
@@ -152,11 +186,15 @@
         el: '#app',
         data: function() {
             return {
+                cashGiftVisible:false,
+                gridDataType:'0',
+                gridData:[],
                 dataList:[],
                 userIntegral : '',
                 giftFormVisible:false,
                 loading:true,
                 form: {},
+                formGift:{},
                 fileList: [],
                 rules:{
                     name:[{required: true, message: '请输入礼品名称', trigger: 'blur'}],
@@ -165,6 +203,46 @@
             }
         },
         methods:{
+            //兑换礼品
+            handleClick(data){
+                var _self = this;
+                var id = data.id;
+                $.ajax({
+                    url:'/membercentre/cashGift?id='+id,
+                    type:'get',
+                    dataType:'json',
+                    success:function (resp) {
+                        if (resp>0){
+                            _self.$notify({
+                                title: '成功',
+                                message: '兑换成功！',
+                                type: 'success'
+                            });
+                            _self.formGift = {};
+                            _self.gridData = [];
+                            _self.cashGiftVisible = false;
+                            _self.loading=true;
+                            _self.loadings();
+                        }
+                    }
+                })
+            },
+            //查询兑换的礼品
+            queryGift(form){
+                var _self = this;
+                $.ajax({
+                    url:'/membercentre/queryGift',
+                    type:'get',
+                    dataType:'json',
+                    data:form,
+                    success:function (resp) {
+                        _self.gridData = resp;
+                        _self.gridDataType = '1';
+                    }
+                })
+
+            },
+
             //查询积分
             queryIntegral(){
                 var _self = this;
@@ -183,29 +261,40 @@
             //删除
             deleteGift(mgId) {
                 var _self = this;
-                $.ajax({
-                    url:'/membercentre/deleteGift?mgId='+mgId,
-                    type:'get',
-                    dataType:'json',
-                    success:function (resp) {
-                        if (resp>0){
-                            _self.$notify({
-                                title: '成功',
-                                message: '删除成功！',
-                                type: 'success'
-                            });
-                            _self.loading=true;
-                            _self.loadings();
-                            _self.query();
-                            _self.giftFormVisible = false;
-                        }else {
-                            _self.$notify.error({
-                                title: '错误',
-                                message: '删除失败！'
-                            });
+                _self.$confirm('此操作将永久删除该礼品, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    $.ajax({
+                        url:'/membercentre/deleteGift?mgId='+mgId,
+                        type:'get',
+                        dataType:'json',
+                        success:function (resp) {
+                            if (resp>0){
+                                _self.$notify({
+                                    title: '成功',
+                                    message: '删除成功！',
+                                    type: 'success'
+                                });
+                                _self.loading=true;
+                                _self.loadings();
+                                _self.query();
+                                _self.giftFormVisible = false;
+                            }else {
+                                _self.$notify.error({
+                                    title: '错误',
+                                    message: '删除失败！'
+                                });
+                            }
                         }
-                    }
-                })
+                    })
+                }).catch(() => {
+                    _self.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             },
             //提交
             onSubmit(form) {
@@ -273,6 +362,15 @@
                     this.loading = false;
                 }, 1000);
             },
+            changeState(row){
+                if (row.goState=='0'){
+                    return '未兑换';
+                }else if (row.goState == '1'){
+                    return '已兑换'
+                }else {
+                    return '未知';
+                }
+            }
         },
         created(){
             this.loadings();

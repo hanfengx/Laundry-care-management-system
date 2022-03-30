@@ -28,4 +28,8 @@ public interface MemberCentreServiceImp {
 
     public List<GiftOrders> getGiftOrders(String userName);
 
+    public List<GiftOrders> queryGift(String goRandom);
+
+    public Integer cashGift(String id);
+
 }
