@@ -73,7 +73,8 @@
                 left join activity a on
                 lo.lo_act_id = a.act_id
         <where>
-            lo_user_id = #{userId}
+            1=1
+            <if test="userId!=''">and lo_user_id = #{userId}</if>
             <if test="activity!=''">and act_name=#{activity}</if>
             <if test="state!=''">and lo_state=#{state}</if>
             <if test="date!=''">and lo_date=#{date}</if>
@@ -97,5 +98,11 @@
 
     <update id="revise">
         update laundry_orders set lo_city_id = #{cityName} ,lo_address = #{orderPlace} where lo_id = #{loId}
+    </update>
+
+    <update id="updateState">
+        UPDATE xiyi.laundry_orders
+        SET lo_state=#{value}
+        WHERE lo_id=#{id};
     </update>
 </mapper>

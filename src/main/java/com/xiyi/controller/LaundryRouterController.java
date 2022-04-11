@@ -95,4 +95,12 @@ public class LaundryRouterController {
         return modelAndView;
     }
 
+    @RequestMapping("/laudry/sysordermanagement")
+    public ModelAndView sysOrdermanagement(HttpServletRequest request,Model mm){
+        HttpSession session = request.getSession(true);
+        mm.addAttribute("userName",session.getAttribute("userName"));
+        modelAndView.setViewName("sys_ordermanagement");
+        return modelAndView;
+    }
+
 }

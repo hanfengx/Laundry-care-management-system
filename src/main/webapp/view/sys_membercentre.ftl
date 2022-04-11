@@ -74,13 +74,13 @@
         <div>
             <el-row align="middle" type="flex">
                 <el-col :span="20">
-                    <span>您当前的积分为:<span style="color: #67C23A">管理员</span></span>
+                    <span>您好，尊敬的:<span style="color: #67C23A">管理员</span></span>
                 </el-col>
                 <el-col :span="2">
                     <el-button type="success" @click="giftFormVisible = true" round>添加礼品</el-button>
                 </el-col>
                 <el-col :span="1">
-                    <el-button type="success" @click="cashGiftVisible = true" round>兑换礼品</el-button>
+                    <el-button type="primary" @click="cashGiftVisible = true" round>兑换礼品</el-button>
                 </el-col>
             </el-row>
         </div>

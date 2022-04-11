@@ -40,5 +40,8 @@ public interface OrderManagementMapper {
 
     public Integer deleteGoods(@Param("loId") String loId);
 
+    public Integer updateState(@Param("value") String value,
+                               @Param("id") String id);
+
 
 }

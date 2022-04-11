@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <title>洗衣平台</title>
+    <title>洗衣管理员平台</title>
     <meta charset="UTF-8">
     <#include "__ref_common_js.ftl" parse=true />
     <!-- import Vue before Element -->
@@ -61,7 +61,7 @@
         margin-top: 9px;
     }
     .el-dropdown {
-        margin-left: 840px;
+        margin-left: 980px;
     }
     .el-dropdown-link {
         cursor: pointer;
@@ -101,7 +101,7 @@
 
                         </el-menu>
                     </div>
-                    <div>
+                    <div >
                         <el-dropdown
                                 trigger="click"
                                 placement="bottom-start">
@@ -136,14 +136,15 @@
             return {
                 title:[
                     {tit: '活动',url:'/laundry/systemActivity?username='+_name},
-                    {tit: '订单',url:'/3'},
+                    {tit: '订单',url:'/laudry/sysordermanagement'},
+                    {tit: '衣服',url:'/3'},
                     {tit: '会员',url:'/laudry/sysmembercentre'},
                     {tit: '问题',url:'/2'},
                 ],
                 name:_name,
                 pass:_pass,
                 visible: false,
-                activeIndex: '/laundry/systemActivity?username='+name,
+                activeIndex: '/laundry/systemActivity?username='+_name,
 
             }
         },
@@ -153,7 +154,7 @@
                 var _self = this;
                 var username = _self.name;
                 var iframe = document.getElementById("iframe")
-                iframe.src='/laundry/systemActivity?username='+username;
+                iframe.src=_self.activeIndex;
             },
 
             handleSelect(key, keyPath) {

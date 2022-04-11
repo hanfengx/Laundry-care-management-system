@@ -29,8 +29,8 @@
         <el-form label-width="auto" :inline="true" :model="form" class="demo-form-inline">
             <el-row>
                 <el-col :span="8">
-                    <el-form-item label="活动名称">
-                        <el-input clearable v-model="form.activity" placeholder="请输入参加的活动"></el-input>
+                    <el-form-item label="用户名">
+                        <el-input clearable v-model="form.userId" placeholder="请输入用户名"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -103,12 +103,12 @@
                     操作
                 </template>
                 <el-button type="primary" @click="checkTheDetail(item.ordersGoods,item.loState)" round>查看详情</el-button>
-                <el-button type="info" :disabled="item.loState=='0'?false:true" round @click="editOrder(item.actCityId,item.loId,item.loCityId,item.loAddress)" >修改地址</el-button>
-                <el-button type="danger" :disabled="item.loState=='0'?false:true" @click="deleteOrder(item.loId)" round>删除订单</el-button>
+                <el-button type="success" @click="transmissionModifyState(item.loId)" round>修改状态</el-button>
+
             </el-descriptions-item>
         </el-descriptions>
     </div>
-
+    <#--查看详情-->
     <div>
         <el-dialog title="查看详情" :visible.sync="checkTheDetails">
             <el-table :data="ordersGoods" border show-summary>
@@ -118,35 +118,31 @@
             </el-table>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="checkTheDetails = false">取 消</el-button>
-                <el-button :disabled="loState=='0'?false:true" type="success" @click="pay(ordersGoods)">{{loState=='0'?'支 付':'已支付'}}</el-button>
+                <el-button :disabled="true" type="success">{{loState=='0'?'未支付':'已支付'}}</el-button>
 
             </div>
         </el-dialog>
     </div>
-
-    <#--修改-->
+    <#--修改状态-->
     <div>
-        <el-dialog title="修改订单" :visible.sync="ChangeOrder">
-            <el-form ref="form" label-width="100px" :model="form">
-                <el-form-item label="所在城市">
-                    <el-cascader
-                            :props="{ checkStrictly: true }"
-                            v-model="form.orderCity"
-                            :options="citys"
-                            clearable
-                            placeholder="请选择城市"
-                            filterable
-                            :show-all-levels="false"></el-cascader>
+        <el-dialog title="修改状态" :visible.sync="modifyStateVisible">
+            <el-form label-width="auto" :inline="true" :model="stateForm" class="demo-form-inline">
+                <el-form-item label="订单状态">
+                    <el-select v-model="stateForm.value" clearable placeholder="请选择">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
-                <el-form-item label="详细地址">
-                    <el-input v-model="form.orderPlace"></el-input>
+                <#--modifyState(item.loId)-->
+                <el-form-item >
+                    <el-button  type="success" @click="modifyState(stateForm.value)">确认</el-button>
+                    <el-button  type="danger" @click="modifyStateVisible=false">取消</el-button>
                 </el-form-item>
             </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="ChangeOrder = false">取 消</el-button>
-                <el-button type="success" @click="revise(form)">确定修改</el-button>
-
-            </div>
         </el-dialog>
     </div>
     <div>
@@ -164,11 +160,19 @@
 </body>
 <script>
     var userName = '${userName}';
-
     var vm = new Vue({
         el: '#app',
         data: function() {
             return {
+                stateForm:{
+                    id:'',
+                    value:''
+                },
+                options:[
+                    {label:'正在洗衣',value:'2'},
+                    {label:'已完成',value:'3'},
+                ],
+                modifyStateVisible:false,
                 ChangeOrder:false,
                 operateDisable:false,
                 checkTheDetails:false,
@@ -181,6 +185,7 @@
                 order:[],
                 ordersGoods:[],
                 form:{
+                    userId:'',
                     activity:'',
                     date:'',
                     state:''
@@ -191,7 +196,6 @@
                     loId:'',
                     orderCity:[],
                     orderPlace:''
-
                 },
 
             }
@@ -212,145 +216,48 @@
                     return '已完成';
                 }
             },
-            //删除订单
-            deleteOrder(loId){
+            //传输修改状态订单id
+            transmissionModifyState(id){
                 var _self = this;
-                $.ajax({
-                    url:'/management/deleteOrder?loId='+loId,
-                    type:'get',
-                    dataType:'json',
-                    success:function (resp){
-                        if (resp>0){
-                            _self.$message({
-                                message: '删除成功！',
-                                type: 'success'
-                            });
+                _self.modifyStateVisible=true;
+                _self.stateForm.id = id;
+            },
+            //修改状态
+            modifyState(value){
+                var _self = this;
+                _self.stateForm.value = value;
+                console.log(_self.stateForm)
+                _self.$confirm('确定修改此订单状态, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    $.ajax({
+                        url:'/management/updateState',
+                        type:'get',
+                        data:_self.stateForm,
+                        dataType: 'json',
+                        success:function (resp) {
+                            if (resp>0){
+                                _self.$message({
+                                    type: 'success',
+                                    message: '修改状态成功!'
+                                });
+                            }
+                            _self.modifyStateVisible=false;
                             _self.loading=true;
                             _self.getOrder();
                             _self.loadings();
-                        }else {
-                            _self.$message.error('删除失败');
                         }
-                    }
-                })
-            },
-            //确定修改
-            revise(form){
-                var _self = this;
-                $.ajax({
-                    url : '/management/revise',
-                    type : 'post',
-                    data: form,
-                    dataType: 'json',
-                    success:function (resp) {
-                        if (resp>0){
-                            _self.$message({
-                                message: '修改成功！',
-                                type: 'success'
-                            });
-                            _self.ChangeOrder = false;
-                            _self.loading=true;
-                            _self.getOrder();
-                            _self.loadings();
-
-                        }else {
-                            _self.$message.error('修改失败');
-                        }
-                    }
-                })
-            },
-            //修改地址页面回显
-            editOrder(actCityId,loId,loCityId,loAddress){
-                var _self = this;
-                _self.ChangeOrder = true;
-                var loCityArr = loCityId.replace("[","").replace("]","").replace(/\s*/g,"").split(',');
-                _self.form.orderPlace = loAddress;
-                //回显订单城市
-                _self.form.orderCity = [];
-                loCityArr.forEach(function(data,index,arr){
-                    _self.form.orderCity.push(+data);
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消修改'
+                    });
                 });
-                _self.form.loId = loId;
-                if (actCityId!=null){
-                    //回显该活动城市
-                    $.ajax({
-                        url:'/washclothes/getChildCity?cityId='+actCityId,
-                        type:'get',
-                        dataType:'json',
-                        success:function (resp) {
-                            _self.citys = _self.getTreeData(resp);
-                        }
-                    })
 
-                }else {
-                    //回显所有城市
-                    $.ajax({
-                        url:'/main/city',
-                        type:'get',
-                        dataType:'json',
-                        success:function (resp) {
-                            _self.citys = _self.getTreeData(resp);
-                        }
-                    })
-                }
 
-            },
-            // 递归方法  去除chilren的空数组
-            getTreeData(data){
-                // 循环遍历json数据
-                for(var i=0;i<data.length;i++){
-                    if (data[i].children){
-                        if(data[i].children.length<1){
-                            // children若为空数组，则将children设为undefined
-                            data[i].children=undefined;
-                        }else {
-                            // children若不为空数组，则继续 递归调用 本方法
-                            this.getTreeData(data[i].children);
-                        }
-                    }
-                }
-                return data;
-            },
-            //支付功能
-            pay(ordersGoods){
-                var _self = this;
-                _self.checkTheDetails = true;
-                var ordersGoods = ordersGoods;
-                var num = 0;
-                var price = 0;
-                var sum = 0;
-                for (var ordersGoodsKey in ordersGoods) {
-                    num = parseFloat(ordersGoods[ordersGoodsKey].ogNum);
-                    price = parseFloat(ordersGoods[ordersGoodsKey].ogPrice);
-                    sum += num*price;
-                }
-
-                //支付
-                var pay = {
-                    sum:sum,
-                    userId:userName,
-                    loId:ordersGoods[0].ogLoId
-                }
-                $.ajax({
-                    url:'/management/pay',
-                    type:'get',
-                    data:pay,
-                    dataType: 'json',
-                    success:function (resp) {
-                        if (resp>0){
-                            _self.$message({
-                                message: '支付成功！',
-                                type: 'success'
-                            });
-                            _self.checkTheDetails=false;
-                            _self.loading=true;
-                            _self.getOrder();
-                            _self.loadings();
-                        }else {
-                            _self.$message.error('支付失败！余额不足');
-                        }
-                    }
-                })
             },
             //查看详情
             checkTheDetail(ordersGoods,loState){
@@ -387,17 +294,17 @@
             },
             //订单回显
             getOrder(formInline){
-              var _self = this;
-              var userId = _self.userId;
-              $.ajax({
-                  url:'/management/getOrder?userId='+userId,
-                  type:'get',
-                  data:formInline,
-                  dataType:'json',
-                  success:function (resp){
-                      _self.order = resp;
-                  }
-              })
+                var _self = this;
+                var userId = _self.userId;
+                $.ajax({
+                    url:'/management/getOrder',
+                    type:'get',
+                    data:formInline,
+                    dataType:'json',
+                    success:function (resp){
+                        _self.order = resp;
+                    }
+                })
             },
             loadings(){
                 $('#app').css('display','block');

@@ -15,4 +15,6 @@ public interface OrderManagementServiceImp {
 
     public Integer deleteOrder(String loId);
 
+    public Integer updateState(String value,String id);
+
 }

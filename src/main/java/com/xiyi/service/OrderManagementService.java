@@ -89,5 +89,10 @@ public class OrderManagementService implements OrderManagementServiceImp {
         return goods;
     }
 
+    @Override
+    public Integer updateState(String value, String id) {
+        return orderManagementMapper.updateState(value, id);
+    }
+
 
 }

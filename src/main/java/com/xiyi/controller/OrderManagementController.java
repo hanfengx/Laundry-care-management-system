@@ -17,7 +17,7 @@ public class OrderManagementController {
 
     //查询和初始化数据
     @GetMapping("getOrder")
-    public List<InsertOrder> getOrder(@RequestParam("userId") String userId,
+    public List<InsertOrder> getOrder(@RequestParam(value = "userId",required = false,defaultValue = "") String userId,
                                       @RequestParam(value = "activity",required = false,defaultValue = "") String activity,
                                       @RequestParam(value = "state",required = false,defaultValue = "") String state,
                                       @RequestParam(value = "date",required = false,defaultValue = "") String date){
@@ -50,6 +50,14 @@ public class OrderManagementController {
     public Integer deleteOrder(@RequestParam("loId") String loId){
 
         return orderManagementServiceImp.deleteOrder(loId);
+    }
+
+    //管理员修改订单状态
+    @GetMapping("updateState")
+    public Integer updateState(@RequestParam("value") String value,
+                               @RequestParam("id") String id){
+
+        return orderManagementServiceImp.updateState(value, id);
     }
 
 }
