@@ -11,6 +11,8 @@ public class ClothesType {
 
     private Integer value;
 
+    private String cltCategory;
+
     private String cltName;
 
     private String label;

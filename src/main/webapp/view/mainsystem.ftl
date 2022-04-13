@@ -137,7 +137,7 @@
                 title:[
                     {tit: '活动',url:'/laundry/systemActivity?username='+_name},
                     {tit: '订单',url:'/laudry/sysordermanagement'},
-                    {tit: '衣服',url:'/3'},
+                    {tit: '衣服',url:'/laudry/sysClothesType'},
                     {tit: '会员',url:'/laudry/sysmembercentre'},
                     {tit: '问题',url:'/2'},
                 ],
@@ -154,6 +154,7 @@
                 var _self = this;
                 var username = _self.name;
                 var iframe = document.getElementById("iframe")
+
                 iframe.src=_self.activeIndex;
             },
 
@@ -161,6 +162,10 @@
                 console.log(key);
                 console.log(keyPath);
                 var iframe = document.getElementById("iframe")
+                if (keyPath=='/laudry/sysClothesType'){
+                    iframe.style.height = '580';
+                }
+
                 iframe.src=keyPath;
 
             },

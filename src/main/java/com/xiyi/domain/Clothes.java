@@ -13,6 +13,8 @@ public class Clothes {
 
     private String cloPrice;
 
+    private String cloCategory;
+
 
 
 }

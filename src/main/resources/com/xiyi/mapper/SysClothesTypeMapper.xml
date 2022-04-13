@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiyi.mapper.SysClothesTypeMapper">
+
+    <resultMap id="clothesType" type="com.xiyi.domain.ClothesType">
+        <result property="label" column="clt_name"/>
+        <result property="value" column="clt_id"/>
+        <result property="cltCategory" column="clt_category"/>
+        <collection property="children" javaType="java.util.ArrayList" ofType="Clothes">
+            <result property="value" column="clo_id"/>
+            <result property="label" column="clo_name"/>
+            <result property="parentId" column="clo_typeid"/>
+            <result property="cloPrice" column="clo_price"/>
+            <result property="cloCategory" column="clo_category"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="clothes" type="com.xiyi.domain.Clothes">
+        <result property="label" column="clo_name"/>
+        <result property="value" column="clo_id"/>
+        <result property="cloPrice" column="clo_price"/>
+    </resultMap>
+    <update id="editBigClothes">
+        UPDATE clothes_type
+        SET clothes_type=#{name}
+        WHERE clothes_type=#{parentId};
+    </update>
+
+
+    <update id="editSmallClothes">
+        UPDATE clothes
+        SET clo_name=#{name}, clo_price=#{price}, clo_category=#{category}
+        WHERE clo_id=#{parentId};
+    </update>
+
+    <delete id="deleteSmallClothes">
+        DELETE FROM clothes
+        WHERE clo_id=#{id};
+    </delete>
+
+    <delete id="deleteBigClothes">
+        DELETE FROM clothes_type
+        WHERE clt_id=#{id};
+    </delete>
+
+    <delete id="deleteSmallTypeClothes">
+        DELETE FROM clothes
+        WHERE clo_typeid=#{id};
+    </delete>
+
+
+    <select id="getTree" resultMap="clothesType">
+        select
+            ct.clt_id,
+            ct.clt_name,
+            ct.clt_category,
+            c.clo_id,
+            c.clo_name,
+            c.clo_price,
+            c.clo_category,
+            c.clo_typeid
+        from
+            clothes_type ct
+                left join clothes c on
+                ct.clt_id = c.clo_typeid
+    </select>
+
+    <select id="getClothes" resultMap="clothes">
+        select * from clothes where clo_typeid = #{value};
+    </select>
+
+    <select id="getClotheType" resultMap="clothes">
+        select * from clothes where clo_id = #{value};
+    </select>
+
+    <insert id="addBigClothes">
+        insert into clothes_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name!=null">clt_name</if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="name!=null">#{name}</if>
+        </trim>
+    </insert>
+
+    <insert id="addSmallClothes">
+        insert into clothes
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name!=null">clo_name,</if>
+            <if test="category!=null">clo_category,</if>
+            <if test="parentId!=null">clo_typeid,</if>
+            <if test="price!=null">clo_price</if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="name!=null">#{name},</if>
+            <if test="category!=null">#{category},</if>
+            <if test="parentId!=null">#{parentId},</if>
+            <if test="price!=''">#{price}</if>
+        </trim>
+    </insert>
+</mapper>
