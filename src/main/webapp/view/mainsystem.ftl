@@ -154,7 +154,7 @@
                 var _self = this;
                 var username = _self.name;
                 var iframe = document.getElementById("iframe")
-
+                iframe.style.height = '750';
                 iframe.src=_self.activeIndex;
             },
 
@@ -162,8 +162,10 @@
                 console.log(key);
                 console.log(keyPath);
                 var iframe = document.getElementById("iframe")
-                if (keyPath=='/laudry/sysClothesType'){
+                if (keyPath=='/laudry/sysClothesType'||keyPath=='/laudry/sysmembercentre'){
                     iframe.style.height = '580';
+                }else {
+                    iframe.style.height = '750';
                 }
 
                 iframe.src=keyPath;
