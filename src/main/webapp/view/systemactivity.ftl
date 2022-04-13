@@ -227,8 +227,16 @@
         el: '#app',
         data: function() {
             return {
+                username:_name,
                 queryForm:{},
                 form:{
+                    actId:'',
+                    name:'',
+                    region:'',
+                    date:[],
+                    actContent:'',
+                    place:[],
+                    actDiscount:'',
                     username:_name,
                 },
                 visible:false,
@@ -294,6 +302,7 @@
                     actContent:'',
                     place:[],
                     username:_self.username,
+                    actDiscount:''
                 }
                 $.ajax({
                     url: '/main/system/queryOne?actId='+id,
@@ -302,6 +311,7 @@
                     success: function (resp) {
                         _self.form.actId = resp[0].actId;
                         _self.form.name = resp[0].actName;
+                        _self.form.actDiscount = parseInt(resp[0].actDiscount);
                         _self.$nextTick(() => {
                             _self.$set(_self.form, "date", [resp[0].actCreateDate, resp[0].actEndDate]);
                             _self.$forceUpdate();
@@ -425,7 +435,7 @@
                         this.loading = true;
                         this.loadings();
                     } else {
-                        _self.$message.error('新增失败,请修改后重新添加！');
+                        _self.$message.error('失败！请重新操作！');
                         return false;
                     }
                 });

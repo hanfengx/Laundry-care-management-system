@@ -11,6 +11,7 @@
         <result property="actPlace" column="act_place"/>
         <result property="actScope" column="act_scope"/>
         <result property="actState" column="act_state"/>
+        <result property="actDiscount" column="act_discount"/>
         <association property="clothesType" javaType="ClothesType">
             <id property="cltId" column="clt_id"></id>
             <result property="cltName" column="clt_name"></result>
@@ -73,7 +74,7 @@
             <if test="userName!=null||userName!=''">act_originator=#{userName},</if>
             <if test="actContent!=null  ||actContent!=''">act_content=#{actContent},</if>
             <if test="placeId!=null||placeId!=0">act_place=#{placeId},</if>
-            <if test="actRegion!=null||actRegion!=''">act_scope=#{actRegion}</if>
+            <if test="actRegion!=null||actRegion!=''">act_scope=#{actRegion},</if>
             <if test="actDiscount!=null||actDiscount!=''">act_discount=#{actDiscount}</if>
         </trim>
         where act_id = #{actId};
