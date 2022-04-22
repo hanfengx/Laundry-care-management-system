@@ -20,7 +20,7 @@ import java.util.Map;
 public class MainActivityController {
 
     @Autowired
-    MainActivityServiceImp mainActivityServiceImp;
+    private MainActivityServiceImp mainActivityServiceImp;
 
     /*返回查询城市city*/
     @GetMapping("city")

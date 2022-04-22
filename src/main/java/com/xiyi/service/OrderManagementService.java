@@ -20,7 +20,7 @@ import java.util.Map;
 public class OrderManagementService implements OrderManagementServiceImp {
 
     @Autowired
-    OrderManagementMapper orderManagementMapper;
+    private OrderManagementMapper orderManagementMapper;
 
 
     /*

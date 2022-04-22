@@ -6,6 +6,23 @@
     <!-- import CSS -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 </head>
+<style>
+    .label{
+        width: 150px;
+    }
+    .activeNames{
+        width: 150px;
+    }
+    .city{
+        width: 250px;
+    }
+    .scopes{
+        width: 200px;
+    }
+    .discount{
+        width: 100px;
+    }
+</style>
 <body>
 <div id="app" style="display: none" >
     <div>
@@ -52,49 +69,49 @@
     </div>
     <div v-loading="loading"  >
         <el-descriptions v-for="item in activity" style="margin-top: 10px"  class="margin-top" :column="4"  border>
-            <el-descriptions-item size="medium">
+            <el-descriptions-item content-class-name="activeNames" label-class-name="label">
                 <template slot="label">
                     <i class="el-icon-tickets"></i>
                     活动名称
                 </template>
                 {{item.actName}}
             </el-descriptions-item>
-            <el-descriptions-item>
+            <el-descriptions-item content-class-name="scopes" label-class-name="label">
                 <template slot="label">
                     <i class="el-icon-scissors"></i>
                     活动范围
                 </template>
                 {{item.clothesType.cltName}}
             </el-descriptions-item>
-            <el-descriptions-item>
+            <el-descriptions-item label-class-name="label" content-class-name="discount">
                 <template slot="label">
                     <i class="el-icon-s-goods"></i>
                     活动折扣
                 </template>
                 {{item.actDiscount/10}}折
             </el-descriptions-item>
-            <el-descriptions-item>
+            <el-descriptions-item label-class-name="label">
                 <template slot="label">
                     <i class="el-icon-notebook-2"></i>
                     活动内容
                 </template>
                 {{item.actContent}}
             </el-descriptions-item>
-            <el-descriptions-item>
+            <el-descriptions-item label-class-name="label">
                 <template slot="label">
                     <i class="el-icon-map-location"></i>
                     活动地点
                 </template>
                 <el-tag>{{item.city.cityName}}</el-tag>
             </el-descriptions-item>
-            <el-descriptions-item>
+            <el-descriptions-item label-class-name="label" content-class-name="time">
                 <template slot="label">
                     <i class="el-icon-date"></i>
                     活动时间
                 </template>
                 {{item.actCreateDate}}至{{item.actEndDate}}
             </el-descriptions-item>
-            <el-descriptions-item>
+            <el-descriptions-item label-class-name="label">
                 <template slot="label">
                     <i class="el-icon-edit"></i>
                     操作
@@ -116,7 +133,7 @@
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :current-page="current.pageNum"
-                :page-sizes="[5, 10, 15, 20]"
+                :page-sizes="[3, 5, 8, 10]"
                 :page-size="current.pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="total">

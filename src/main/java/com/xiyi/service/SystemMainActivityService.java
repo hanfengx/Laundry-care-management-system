@@ -13,7 +13,7 @@ import java.util.List;
 public class SystemMainActivityService implements SystemMainActivityServiceImp {
 
     @Autowired
-    SystemMainActivityMapper systemMainActivityMapper;
+    private SystemMainActivityMapper systemMainActivityMapper;
 
     @Override
     public Integer addAct(String actName, List<String> actPlace, List<String> actDate, String actRegion, String actContent,String userName) {

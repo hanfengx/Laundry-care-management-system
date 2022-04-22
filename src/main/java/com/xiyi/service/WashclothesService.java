@@ -16,7 +16,7 @@ public class WashclothesService implements WashclothesServiceImp {
     private WashclothesMappers washclothesMapper;
 
     @Autowired
-    MainActivityMapper mainActivityMapper;
+    private MainActivityMapper mainActivityMapper;
 
     @Override
     public List<Activity> getActivity() {

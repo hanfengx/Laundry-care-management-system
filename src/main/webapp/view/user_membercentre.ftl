@@ -86,7 +86,7 @@
             <el-row >
                 <el-col :span="4"  v-for="item in dataList">
                     <el-card shadow="hover"  style="margin-left: 20px;margin-top: 20px" :body-style="{ padding: '0px' }">
-                        <img  :src="'/membercentre/queryImage?mgId='+item.mgId" class="image">
+                        <img  :src="'/membercentre/queryImage?mgId='+item.mgId" style="height: 220px" class="image">
                         <div style="padding: 14px;">
                             <span>{{item.name}}</span>
                             <div class="bottom clearfix">

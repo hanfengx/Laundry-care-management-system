@@ -13,7 +13,7 @@ import java.util.List;
 public class OrderManagementController {
 
     @Autowired
-    OrderManagementServiceImp orderManagementServiceImp;
+    private OrderManagementServiceImp orderManagementServiceImp;
 
     //查询和初始化数据
     @GetMapping("getOrder")

@@ -16,6 +16,15 @@
     .city{
         width: 250px;
     }
+    .scopes{
+        width: 200px;
+    }
+    .discount{
+        width: 100px;
+    }
+    .cltName{
+        width: 150px;
+    }
 </style>
 <body>
 <div id="app" style="display: none"  >
@@ -63,14 +72,14 @@
                 </template>
                 {{item.actName}}
             </el-descriptions-item>
-            <el-descriptions-item content-class-name="scopes" label-class-name="label">
+            <el-descriptions-item content-class-name="scopes" label-class-name="cltName">
                 <template slot="label">
                     <i class="el-icon-scissors"></i>
                     活动范围
                 </template>
                 {{item.clothesType.cltName}}
             </el-descriptions-item>
-            <el-descriptions-item label-class-name="label">
+            <el-descriptions-item label-class-name="label"  content-class-name="discount">
                 <template slot="label">
                     <i class="el-icon-s-goods"></i>
                     活动折扣

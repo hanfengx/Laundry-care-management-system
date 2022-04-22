@@ -103,6 +103,7 @@
                     </div>
                     <div>
                         <el-dropdown
+                                @command="handleCommand"
                                 trigger="click"
                                 placement="bottom-start">
                     <span class="el-dropdown-link">
@@ -112,7 +113,7 @@
                                 <el-dropdown-item icon="el-icon-mobile-phone">充值</el-dropdown-item>
                                 <el-dropdown-item icon="el-icon-circle-plus-outline">加入我们</el-dropdown-item>
                                 <el-dropdown-item icon="el-icon-chat-line-round">常见问题</el-dropdown-item>
-                                <el-dropdown-item icon="el-icon-switch-button">退出账号</el-dropdown-item>
+                                <el-dropdown-item icon="el-icon-switch-button" command="exitOut" >退出账号</el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
                     </div>
@@ -139,7 +140,7 @@
                     {tit: '我要洗衣',url:'/laundry/washClothes'},
                     {tit: '订单管理',url:'/laudry/orderManagement'},
                     {tit: '会员中心',url:'/laudry/membercentre'},
-                    {tit: '常见问题',url:'/5'}
+                    {tit: '常见问题',url:'/laudry/userQuestion'}
                 ],
                 name:_name,
                 pass:_pass,
@@ -149,6 +150,12 @@
             }
         },
         methods: {
+            //退出账号
+            handleCommand(command){
+                if (command=='exitOut'){
+                    window.location.href = '/login';
+                }
+            },
             /*初始化页面*/
             Initialize(){
                 var iframe = document.getElementById("iframe")

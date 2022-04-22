@@ -16,7 +16,7 @@ public class MemberCentreService implements MemberCentreServiceImp {
     private static String file = " ";
 
     @Autowired
-    MemberCentreMapper memberCentreMapper;
+    private MemberCentreMapper memberCentreMapper;
 
     @Override
     public void importImg(String encode) {

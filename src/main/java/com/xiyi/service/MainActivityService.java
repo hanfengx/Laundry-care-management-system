@@ -19,7 +19,7 @@ import java.util.*;
 public class MainActivityService implements MainActivityServiceImp {
 
     @Autowired
-    MainActivityMapper mainActivityMapper;
+    private MainActivityMapper mainActivityMapper;
 
     /*获取所有最新活动*/
     @Override

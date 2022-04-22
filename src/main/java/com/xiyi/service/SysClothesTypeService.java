@@ -13,7 +13,7 @@ import java.util.List;
 public class SysClothesTypeService implements SysClothesTypeServiceImp {
 
     @Autowired
-    SysClothesTypeMapper sysClothesTypeMapper;
+    private SysClothesTypeMapper sysClothesTypeMapper;
 
     @Override
     public List<ClothesType> getTree() {

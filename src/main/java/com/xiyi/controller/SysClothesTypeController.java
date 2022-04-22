@@ -20,7 +20,7 @@ import java.util.List;
 public class SysClothesTypeController {
 
     @Autowired
-    SysClothesTypeService sysClothesTypeService;
+    private SysClothesTypeService sysClothesTypeService;
 
     //初始化树形组件
     @GetMapping("getTree")

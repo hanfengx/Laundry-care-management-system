@@ -27,7 +27,7 @@ import java.util.List;
 public class MemberCentreController {
 
     @Autowired
-    MemberCentreServiceImp memberCentreServiceImp;
+    private MemberCentreServiceImp memberCentreServiceImp;
 
     //图片导入
     @PostMapping("import")

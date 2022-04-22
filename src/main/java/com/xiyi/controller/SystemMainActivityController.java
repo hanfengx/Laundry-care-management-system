@@ -13,7 +13,7 @@ import java.util.List;
 public class SystemMainActivityController {
 
     @Autowired
-    SystemMainActivityServiceImp systemMainActivityServiceImp;
+    private SystemMainActivityServiceImp systemMainActivityServiceImp;
 
 
     /*增加活动*/

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiyi.mapper.QuestionMapper">
+
+    <resultMap id="question" type="com.xiyi.domain.Question">
+        <result property="qcnId" column="qcn_id"/>
+        <result property="qcnName" column="qcn_name"/>
+        <result property="qcnAsk" column="qcn_ask"/>
+        <association property="questionLike" javaType="com.xiyi.domain.QuestionLike">
+            <id property="qclId" column="qcl_id"/>
+            <result property="isLike" column="is_like"/>
+            <result property="notLike" column="not_like"/>
+        </association>
+    </resultMap>
+    <insert id="askQuestions" parameterType="com.xiyi.domain.Question">
+        <selectKey keyProperty="qcnId" resultType="java.lang.Integer" order="AFTER" >
+            select last_insert_id();
+        </selectKey>
+
+        insert into questions_common
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qcnName!=null">qcn_name</if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="qcnName!=null">#{qcnName}</if>
+        </trim>
+
+    </insert>
+    <insert id="addLike">
+        insert into questions_common_like
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="num!=null">qcn_id</if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="num!=null">#{num}</if>
+        </trim>
+
+    </insert>
+    <update id="isLike">
+        UPDATE questions_common_like
+        SET is_like=is_like+#{value}
+        WHERE qcn_id=#{id};
+    </update>
+    <update id="notLike">
+        UPDATE questions_common_like
+        SET not_like=not_like-#{value}
+            WHERE qcn_id=#{id};
+    </update>
+
+    <select id="Initialize" resultMap="question">
+        select
+            qc.qcn_id,
+            qc.qcn_name,
+            qc.qcn_ask,
+            qcl.qcl_id,
+            qcl.is_like,
+            qcl.not_like
+        from
+            questions_common qc
+                left join questions_common_like qcl on
+                qc.qcn_id = qcl.qcn_id
+        <where>
+            <if test="question!=''">qc.qcn_name like '%'#{question}'%'</if>
+            <if test="ask!=''">and qc.qcn_ask like '%'#{ask}'%'</if>
+        </where>
+    </select>
+</mapper>
