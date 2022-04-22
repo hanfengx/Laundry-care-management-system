@@ -12,4 +12,8 @@ public interface QuestionServiceImp {
 
     public Integer whetherLike(String value,String id);
 
+    public Integer addAnswer(String id,String answer);
+
+    public Integer deleteQuestion(String id);
+
 }

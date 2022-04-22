@@ -38,7 +38,7 @@ public class InsertOrder {
 
     private Activity activity;
 
-    private List<ordersGoods> ordersGoods;
+    private List<OrdersGoods> ordersGoods;
 
 
 

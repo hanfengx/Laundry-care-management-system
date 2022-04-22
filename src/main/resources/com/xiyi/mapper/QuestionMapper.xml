@@ -36,6 +36,11 @@
         </trim>
 
     </insert>
+    <insert id="addAnswer">
+        UPDATE questions_common
+        SET qcn_ask=#{answer}
+        WHERE qcn_id=#{id};
+    </insert>
     <update id="isLike">
         UPDATE questions_common_like
         SET is_like=is_like+#{value}
@@ -46,6 +51,14 @@
         SET not_like=not_like-#{value}
             WHERE qcn_id=#{id};
     </update>
+    <delete id="deleteLike">
+        DELETE FROM questions_common_like
+        WHERE qcn_id=#{id};
+    </delete>
+    <delete id="deleteQuestion">
+        DELETE FROM questions_common
+        WHERE qcn_id=#{id};
+    </delete>
 
     <select id="Initialize" resultMap="question">
         select
@@ -60,8 +73,8 @@
                 left join questions_common_like qcl on
                 qc.qcn_id = qcl.qcn_id
         <where>
-            <if test="question!=''">qc.qcn_name like '%'#{question}'%'</if>
-            <if test="ask!=''">and qc.qcn_ask like '%'#{ask}'%'</if>
+            <if test="question!=''">qc.qcn_name like concat('%','${question}','%')</if>
+            <if test="ask!=''">and qc.qcn_ask like concat('%','${ask}','%')</if>
         </where>
     </select>
 </mapper>

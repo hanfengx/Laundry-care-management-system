@@ -166,6 +166,11 @@
                 console.log(key);
                 console.log(keyPath);
                 var iframe = document.getElementById("iframe")
+                if (keyPath=='/laundry/washClothes'||keyPath=='/laudry/membercentre'||keyPath=='/laudry/userQuestion'){
+                    iframe.style.height = '580';
+                }else {
+                    iframe.style.height = '750';
+                }
                 iframe.src=keyPath;
 
             },

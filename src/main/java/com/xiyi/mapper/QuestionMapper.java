@@ -21,4 +21,10 @@ public interface QuestionMapper {
     public Integer notLike(@Param("value") Integer value,
                           @Param("id") String id);
 
+    public Integer addAnswer(@Param("id") String id,@Param("answer") String answer);
+
+    public Integer deleteLike(@Param("id") String id);
+
+    public Integer deleteQuestion(@Param("id") String id);
+
 }

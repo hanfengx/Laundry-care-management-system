@@ -38,4 +38,16 @@ public class QuestionService implements QuestionServiceImp {
             return questionMapper.notLike(1,id);
         }
     }
+
+    @Override
+    public Integer addAnswer(String id, String answer) {
+        return questionMapper.addAnswer(id, answer);
+    }
+
+    @Override
+    public Integer deleteQuestion(String id) {
+        Integer question = questionMapper.deleteQuestion(id);
+        Integer like = questionMapper.deleteLike(id);
+        return question+like;
+    }
 }

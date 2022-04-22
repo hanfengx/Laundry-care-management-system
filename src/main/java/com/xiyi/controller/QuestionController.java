@@ -45,5 +45,19 @@ public class QuestionController {
         return questionServiceImp.whetherLike(value, id);
     }
 
+    //新增回答
+    @PostMapping("addAnswer")
+    public Integer addAnswer(@RequestParam("id") String id,
+                             @RequestParam("name") String answer){
+
+        return questionServiceImp.addAnswer(id, answer);
+    }
+
+    //删除问题
+    @GetMapping("deleteQuestion")
+    public Integer deleteQuestion(@RequestParam("id") String id){
+
+        return questionServiceImp.deleteQuestion(id);
+    }
 
 }

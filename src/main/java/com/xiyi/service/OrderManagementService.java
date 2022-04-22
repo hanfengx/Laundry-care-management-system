@@ -3,7 +3,7 @@ package com.xiyi.service;
 import com.xiyi.domain.InsertOrder;
 import com.xiyi.domain.Login;
 import com.xiyi.domain.Order;
-import com.xiyi.domain.ordersGoods;
+import com.xiyi.domain.OrdersGoods;
 import com.xiyi.mapper.OrderManagementMapper;
 import com.xiyi.mapper.WashclothesMappers;
 import com.xiyi.service.Impservice.OrderManagementServiceImp;
@@ -40,7 +40,7 @@ public class OrderManagementService implements OrderManagementServiceImp {
             order.setCityName(cityName);
 
             //获取商品中文名
-            for (ordersGoods good : order.getOrdersGoods()) {
+            for (OrdersGoods good : order.getOrdersGoods()) {
                 String ogName = good.getOgName();
                 String replaceGood = ogName.replace("[", "").replace("]", "");
                 String[] splitGood = replaceGood.split(",");

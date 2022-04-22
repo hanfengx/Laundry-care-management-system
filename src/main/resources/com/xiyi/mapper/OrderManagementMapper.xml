@@ -19,7 +19,7 @@
             <result property="actName" column="act_name"/>
             <result property="actDiscount" column="act_discount"/>
         </association>
-        <collection property="ordersGoods" ofType="ordersGoods">
+        <collection property="ordersGoods" ofType="OrdersGoods">
             <result property="ogId" column="og_id"/>
             <result property="ogLoId" column="og_lo_id"/>
             <result property="ogName" column="og_name"/>

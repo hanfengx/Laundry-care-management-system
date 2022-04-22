@@ -154,7 +154,7 @@
         <el-main v-loading="loading" style="background-color: white">
             <div>
                 <el-row>
-                    <el-col :span="12" v-for="(item,index) in quesList" :key="index">
+                    <el-col :span="12" v-for="(item,index) in quesList.slice((page.currentPage-1)*(page.pageSize),page.currentPage*(page.pageSize))" :key="index">
                         <div  style="float: left;margin-left: 30px;margin-top: 30px">
                             <div style="margin-left: 0px" class="questionIcon"><p class="question">问</p></div>
                             <div class="questiontitle">
@@ -198,6 +198,19 @@
                 </el-dialog>
             </div>
         </el-main>
+        <el-footer>
+            <div>
+                <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="page.currentPage"
+                        :page-sizes="[6, 10, 12, 20]"
+                        :page-size="page.pageSize"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="quesList.length">
+                </el-pagination>
+            </div>
+        </el-footer>
     </el-container>
 </div>
 </body>
@@ -208,6 +221,10 @@
         el: '#app',
         data: function() {
             return {
+                page: {
+                    currentPage: 1,
+                    pageSize: 6,
+                },
                 rules: {
                     name: [
                         {required: true, message: '请输入问题名称', trigger: 'blur'}
@@ -224,6 +241,15 @@
             }
         },
         methods:{
+            //前端分页
+            handleSizeChange(val) {
+                this.page.pageSize = val;
+                this.query();
+            },
+            handleCurrentChange(val) {
+                this.page.currentPage = val
+                this.query();
+            },
             //点赞或者踩
             whetherLike(value,id){
                 var _self = this;
