@@ -11,6 +11,7 @@
 <script src="/js/vue-i18n.min.js" type="text/javascript"></script>
 <script src="/js/element-ui.min.js" type="text/javascript"></script>
 <script src="/js/element-uex.min.js" type="text/javascript"></script>
+<script src="/js/index.js" type="text/javascript"/>
 <script type="text/javascript">
     window.writeMenuLog = function(log) {
         /*var menuLog = []
@@ -29,3 +30,4 @@
         localStorage.setItem("menuLog", JSON.stringify(menuLog));*/
     }
 </script>
+<link rel="stylesheet" href="/css/index.css">
