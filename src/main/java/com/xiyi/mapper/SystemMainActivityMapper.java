@@ -15,7 +15,8 @@ public interface SystemMainActivityMapper {
                           @Param("placeId") int placeId,
                           @Param("actRegion") String actRegion,
                           @Param("actContent")String actContent,
-                          @Param("userName")String userName);
+                          @Param("userName")String userName,
+                          @Param("actDiscount") String actDiscount);
 
     public Integer online(@Param("actId") String actId);
 

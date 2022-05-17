@@ -23,9 +23,10 @@ public class SystemMainActivityController {
                           @RequestParam(value = "date[]",defaultValue = "",required = false) List<String> actDate,
                           @RequestParam(value = "region",defaultValue = "",required = false) String actRegion,
                           @RequestParam(value = "actContent",defaultValue = "",required = false) String actContent,
-                          @RequestParam(value = "username",defaultValue = "",required = false) String userName){
+                          @RequestParam(value = "username",defaultValue = "",required = false) String userName,
+                          @RequestParam(value = "actDiscount",defaultValue = "",required = false) String actDiscount){
 
-        return systemMainActivityServiceImp.addAct(actName,actPlace,actDate,actRegion,actContent,userName);
+        return systemMainActivityServiceImp.addAct(actName,actPlace,actDate,actRegion,actContent,userName,actDiscount);
     }
 
     /*上线活动*/

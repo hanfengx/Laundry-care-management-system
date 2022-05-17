@@ -16,7 +16,7 @@ public class SystemMainActivityService implements SystemMainActivityServiceImp {
     private SystemMainActivityMapper systemMainActivityMapper;
 
     @Override
-    public Integer addAct(String actName, List<String> actPlace, List<String> actDate, String actRegion, String actContent,String userName) {
+    public Integer addAct(String actName, List<String> actPlace, List<String> actDate, String actRegion, String actContent,String userName,String actDiscount) {
         /*过滤添加的数据*/
         /*提取搜索框日期*/
         String startDate = "";
@@ -33,7 +33,7 @@ public class SystemMainActivityService implements SystemMainActivityServiceImp {
         }
 
 
-        return systemMainActivityMapper.addAct(actName,startDate,endDate,placeId,actRegion,actContent,userName);
+        return systemMainActivityMapper.addAct(actName,startDate,endDate,placeId,actRegion,actContent,userName,actDiscount);
     }
 
     @Override

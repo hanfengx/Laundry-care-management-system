@@ -44,6 +44,7 @@
             <if test="actContent!=null||actContent!=''">act_content,</if>
             <if test="placeId!=null||placeId!=0">act_place,</if>
             <if test="actRegion!=null||actRegion!=''">act_scope,</if>
+            <if test="actDiscount!=null||actDiscount!=''">act_discount,</if>
             act_state
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
@@ -54,6 +55,7 @@
             <if test="actContent!=null||actContent!=''">#{actContent},</if>
             <if test="placeId!=null||placeId!=0">#{placeId},</if>
             <if test="actRegion!=null||actRegion!=''">#{actRegion},</if>
+            <if test="actDiscount!=null||actDiscount!=''">#{actDiscount},</if>
             0
         </trim>
     </insert>

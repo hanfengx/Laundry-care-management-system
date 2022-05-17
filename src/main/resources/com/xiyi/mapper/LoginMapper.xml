@@ -7,11 +7,17 @@
         <result property="userPwd" column="user_pwd"/>
         <result property="userPermissions" column="user_permissions"/>
     </resultMap>
+    <update id="updatePassword">
+        update login SET user_pwd = #{newPassword} where user_id = #{userId}
+    </update>
 
     <select id="login" parameterType="java.lang.String" resultMap="Login">
         select user_id,user_pwd,user_name,user_permissions
         from login
         where user_name = #{userName} and user_pwd = #{userPwd}
+    </select>
+    <select id="queryPassword" resultType="java.lang.String">
+        select user_name from login where user_pwd = #{password} and user_id = #{userId}
     </select>
 
     <insert id="registration" parameterType="java.lang.Integer">

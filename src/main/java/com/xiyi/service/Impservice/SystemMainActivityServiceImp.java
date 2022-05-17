@@ -9,7 +9,7 @@ import java.util.List;
 public interface SystemMainActivityServiceImp {
 
 
-    public Integer addAct(String actName, List<String> actPlace,List<String> actDate,String actRegion,String actContent,String userName);
+    public Integer addAct(String actName, List<String> actPlace,List<String> actDate,String actRegion,String actContent,String userName,String actDiscount);
 
     public Integer online(String actId);
 

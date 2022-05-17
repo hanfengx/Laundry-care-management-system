@@ -112,8 +112,8 @@
                         <el-form-item prop="category" label="衣服分类" label-width="120">
                             <el-col :span="8">
                                 <el-select v-model="form.category" placeholder="请选择衣服分类">
-                                    <el-option label="一级" value="1"></el-option>
-                                    <el-option label="二级" value="2"></el-option>
+                                    <el-option v-if="!form.disabledChildren"  label="一级" value="1"></el-option>
+                                    <el-option v-if="!form.disabledParents"  label="二级" value="2"></el-option>
                                 </el-select>
                             </el-col>
                         </el-form-item>
@@ -221,6 +221,8 @@
                 console.log(CurrentRow)
                 //回显
                 _self.form={
+                    disabledChildren:CurrentRow.parentId?true:false,
+                    disabledParents:CurrentRow.children?true:false,
                     name:CurrentRow.label,
                     category:CurrentRow.cloCategory||CurrentRow.cltCategory,
                     price:CurrentRow.cloPrice,
@@ -277,7 +279,8 @@
             takeAway(form){
                 var _self = this;
                 _self.dialogFormVisible = false;
-                _self.$refs[form].resetFields();
+                _self.form = {};
+                // _self.$refs[form].resetFields();
             },
             foo() {
                 // 取消鼠标监听事件 菜单栏
