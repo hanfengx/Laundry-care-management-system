@@ -121,14 +121,14 @@
                 <#--修改密码-->
                 <el-dialog title="修改密码" :visible.sync="dialogFormVisible">
                     <el-form :rules="rules" ref="form" :model="form">
-                        <el-form-item prop="password" label="原新密码" :label-width="formLabelWidth">
-                            <el-input prefix-icon="el-icon-lock"  show-password auto-complete="off" v-model="form.password" placeholder="请输入密码"></el-input>
+                        <el-form-item prop="password" label="原密码" :label-width="formLabelWidth">
+                            <el-input prefix-icon="el-icon-lock"  show-password auto-complete="off" v-model="form.password" placeholder="请输入原密码"></el-input>
                         </el-form-item>
                         <el-form-item prop="newPassword" label="新密码" :label-width="formLabelWidth">
-                            <el-input prefix-icon="el-icon-lock"  show-password auto-complete="off" v-model="form.newPassword" placeholder="请输入密码"></el-input>
+                            <el-input prefix-icon="el-icon-lock"  show-password auto-complete="off" v-model="form.newPassword" placeholder="请输入新密码"></el-input>
                         </el-form-item>
                         <el-form-item prop="newAgainPassword" label="确认密码" :label-width="formLabelWidth">
-                            <el-input prefix-icon="el-icon-lock"  show-password auto-complete="off" v-model="form.newAgainPassword" placeholder="请输入密码"></el-input>
+                            <el-input prefix-icon="el-icon-lock"  show-password auto-complete="off" v-model="form.newAgainPassword" placeholder="请再次输入新密码"></el-input>
                         </el-form-item>
                     </el-form>
                     <div slot="footer" class="dialog-footer">
