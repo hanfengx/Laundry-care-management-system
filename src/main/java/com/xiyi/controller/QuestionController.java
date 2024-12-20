@@ -13,7 +13,6 @@ import java.util.List;
 * 常见问题
 * */
 @RestController
-@Slf4j
 @RequestMapping("/question/")
 public class QuestionController {
 
