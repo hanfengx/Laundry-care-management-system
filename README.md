@@ -1,14 +1,15 @@
 # 欢迎来到洗衣毕业设计
 
-## 	一.请不要提交代码
+## 	一.无私有库  直接maven下载启动
 
-## 	二.无私有库  直接maven下载启动
+## 	二.ssm项目需要tomcat
 
-## 	三.ssm项目需要tomcat	
+![img.png](img.png)
+![img_1.png](img_1.png)
 
-## 四.数据库导入
+##  三.数据库导入
 
-### 	1.jdbc.properties文件
+### 1.jdbc.properties文件
 
 ```properties
 jdbc.url=jdbc:mysql://localhost:3307/xiyi?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
